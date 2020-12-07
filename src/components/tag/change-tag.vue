@@ -68,9 +68,7 @@ export default {
                 res => {
                   if (res.code === 'OK') {
                     this.$Message.success(res.message)
-                    this.$router.push({
-                      name: 'home'
-                    })
+                    this.$router.go(-1)
                   }
                 }
               )

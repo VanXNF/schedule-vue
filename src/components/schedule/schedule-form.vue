@@ -301,9 +301,7 @@ export default {
               rb.recycle_bin = false
               toRecycleBin(rb)
             }
-            this.$router.push({
-              name: 'home'
-            })
+            this.$router.go(-1)
           }
         })
     }
