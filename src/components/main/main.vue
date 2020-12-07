@@ -53,7 +53,7 @@ import Search from './components/search'
 import GoBack from './components/goAndBack'
 import { NewNoteButton, NewScheduleButton } from './components/create-button'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
-import tagListToMenuList, { getNewTagList, routeEqual } from '@/libs/util'
+import { getNewTagList, routeEqual } from '@/libs/util'
 import routers from '@/router/routers'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
@@ -203,9 +203,7 @@ export default {
     this.getUnreadMessageCount()
 
     // todo add getTagList , get user id
-    console.log(tagListMock)
-    this.setTagList(tagListMock)
-    console.log(tagListToMenuList(this.$store.state.app.tagList))
+    // this.setTagList(tagListMock)
   }
 }
 </script>
