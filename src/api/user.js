@@ -29,11 +29,11 @@ export const tosignup = ({ userName, password }) => {
 
 export const login = ({ userName, password }) => {
   const data = {
-    userName,
-    password
+    account: userName,
+    key: password
   }
   return axios.request({
-    url: 'login',
+    url: baseUrl + '/user/login',
     data,
     method: 'post'
   })
