@@ -1,6 +1,6 @@
 import axios from '@/libs/api.request'
 
-const baseUrl = 'api'
+const baseUrl = '/api'
 const scheduleUrl = baseUrl + '/schedule'
 const tagUrl = baseUrl + '/tag'
 const noteUrl = baseUrl + '/note'

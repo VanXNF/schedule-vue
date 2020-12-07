@@ -2,11 +2,23 @@
   <div>
     <div>
       <Card class="ivu-c-note-card">
-        <div>
-        <Input v-model="note.note_title" placeholder="请输入记事名称" :disabled="is_disabled" />
+        <div class="ivu-c-note-card-div11">
+        <Input v-model="note.note_title" placeholder="请输入记事名称" :disabled="is_disabled" style="width: 250px;" />
+        <Checkbox
+              v-model="pin_flag"
+              :disabled="is_disabled"
+              class="ivu-check-box"
+        >
+        <Icon
+                type="md-pricetag"
+                class="ivu-check-icon"
+                :size="iconSize"
+              />
+        </Checkbox>
         </div>
         <div>
-          <todo-list @add-todo="addTodo" @remove-todo="removeTodo" :is_pick="s_todo" :todo-items="todoList" v-if="todoList.length===note.todo_list.length" />
+          <todo-list @add-todo="addTodo" @remove-todo="removeTodo" :is_pick="s_todo" :todo-items="todoList"  />
+        <!-- v-if="todoListtodoList.length===note.todo_list.length" -->
         </div>
         <div>
           <Input v-model="note.remarks" maxlength="400" show-word-limit type="textarea" class="ivu-c-note-card-remarks" :disabled="is_disabled"/>
@@ -71,7 +83,7 @@ export default {
         user_id: this.$store.state.user.userId,
         note_title: this.note.note_title,
         remarks: this.note.remarks,
-        pin_flag: '',
+        pin_flag: false,
         tag_id: this.tagId,
         todo_list: this.conTodoList(this.todoList)
       }
@@ -235,4 +247,7 @@ export default {
   position: absolute;
   left: 85px;
 }
+// .ivu-c-note-card-div11{
+//   float: left;
+// }
 </style>

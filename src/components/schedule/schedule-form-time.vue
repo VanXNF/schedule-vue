@@ -124,8 +124,8 @@ export default {
                 {
                   user_id: 1,
                   schedule_name: this.formItem.schedule_name,
-                  start_point: this.formItem.end_point,
-                  cur_point: this.formItem.end_point,
+                  start_point: new Date(),
+                  cur_point: new Date(),
                   end_point: this.formItem.end_point,
                   point_unit: ' ',
                   bar_color: this.formItem.bar_color,
