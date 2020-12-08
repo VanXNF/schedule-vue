@@ -39,10 +39,10 @@
           <FormItem class="ivu-sch-form-radio">
             <p>进度条颜色</p>
             <RadioGroup>
-              <Radio label="red" :disabled="is_disabled">
+              <Radio label="#ff0000" :disabled="is_disabled">
                 <Icon
                   type="md-bookmark"
-                  color="red"
+                  color="#ff0000"
                   :size="iconSize"
                 />
               </Radio>
@@ -53,10 +53,10 @@
                   :size="iconSize"
                 />
               </Radio>
-              <Radio label="rgb(90, 146, 173)" :disabled="is_disabled">
+              <Radio label="#5a92ad" :disabled="is_disabled">
                 <Icon
                   type="md-bookmark"
-                  color="rgb(90, 146, 173)"
+                  color="#5a92ad"
                   :size="iconSize"
                 />
               </Radio>
@@ -82,6 +82,8 @@ export default {
   name: 'ScheduleFormTime',
   data () {
     return {
+      is_change: false,
+      is_disabled: false,
       formItem: {
         schedule_name: '',
         bar_color: 'red',

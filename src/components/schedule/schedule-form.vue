@@ -80,12 +80,12 @@
             <p>进度条颜色</p>
             <RadioGroup v-model="formItem.bar_color">
               <Radio
-                label="red"
+                label="#ff0000"
                 :disabled="is_disabled"
               >
                 <Icon
                   type="md-bookmark"
-                  color="red"
+                  color="#ff0000"
                   :size="iconSize"
                 />
               </Radio>
@@ -100,12 +100,12 @@
                 />
               </Radio>
               <Radio
-                label="rgb(90, 146, 173)"
+                label="#5a92ad"
                 :disabled="is_disabled"
               >
                 <Icon
                   type="md-bookmark"
-                  color="rgb(90, 146, 173)"
+                  color="#5a92ad"
                   :size="iconSize"
                 />
               </Radio>
@@ -239,14 +239,14 @@ export default {
         if (res[0] && res[1]) {
           const d = this.getPostData()
           if (!this.is_change) {
-            createSchdule()
+            createSchdule(d)
               .then(res => getData(res))
               .then(res => {
                 if (res.code === 'OK') {
                   this.$Message.success('创建成功!')
                   // todo add to
                 }
-              })
+              }).catch(this.$Message.error('错误的参数!'))
           } else {
             // 修改
             d.delete_flag = false
