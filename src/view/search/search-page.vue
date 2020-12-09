@@ -3,7 +3,7 @@
     <div>
       <div>
         <p>
-          回收日程
+          日程
         </p>
         <div>
           <schedule-pin :pin-list="scheduleList"/>
@@ -13,7 +13,7 @@
       <Divider></Divider>
       <div>
         <p>
-          回收记事
+          记事
         </p>
         <div>
 
@@ -38,13 +38,17 @@ export default {
   },
   mounted () {
     this.searchResult = this.$store.state.app.searchResult
-    for (let i = 0; i < this.searchResult['schedule_data'].length; i++) {
-      const e = this.searchResult['schedule_data'][i]
-      this.scheduleList.push(e)
+    if (this.searchResult['schedule_data']) {
+      for (let i = 0; i < this.searchResult['schedule_data'].length; i++) {
+        const e = this.searchResult['schedule_data'][i]
+        this.scheduleList.push(e)
+      }
     }
-    for (let i = 0; i < this.noteResult['note_data'].length; i++) {
-      const e = this.noteResult['note_data'][i]
-      this.noteList.push(e)
+    if (this.searchResult['note_data']) {
+      for (let i = 0; i < this.searchResult['note_data'].length; i++) {
+        const e = this.searchResult['note_data'][i]
+        this.noteList.push(e)
+      }
     }
   }
 }
