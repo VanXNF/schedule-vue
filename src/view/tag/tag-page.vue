@@ -51,9 +51,11 @@ export default {
       //   )
     }
     // noteListByTag = {tag_1: pinlist}
-    for (let i = 0; i < this.$store.state.app.noteList.length; i++) {
-      const e = this.$store.state.app.noteList[i]
-      this.noteListByTag[e.tag_id].push(e)
+    for (let j = 0; j < this.$store.state.app.noteList.length; j++) {
+      const ee = this.$store.state.app.noteList[j]
+      if (ee.tag_id) {
+        this.noteListByTag[ee.tag_id].push(ee)
+      }
     }
   }
 }
