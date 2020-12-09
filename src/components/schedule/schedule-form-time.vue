@@ -38,7 +38,7 @@
           </FormItem>
           <FormItem class="ivu-sch-form-radio">
             <p>进度条颜色</p>
-            <RadioGroup>
+            <RadioGroup v-model="formItem.bar_color" >
               <Radio label="#ff0000" :disabled="is_disabled">
                 <Icon
                   type="md-bookmark"
@@ -86,7 +86,7 @@ export default {
       is_disabled: false,
       formItem: {
         schedule_name: '',
-        bar_color: 'red',
+        bar_color: '#ff0000',
         pin_flag: false,
         end_point: ''
       },
@@ -138,7 +138,9 @@ export default {
               ).then(
                 res => {
                   if (res.code === 'OK') {
-                    this.$Message.success('Success!')
+                    this.$Message.success(res.message)
+                  } else {
+                    this.$Message.error(res.message)
                   }
                 }
               )

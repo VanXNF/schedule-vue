@@ -128,7 +128,7 @@
               v-if="is_disabled"
               type="error"
               class="ivu-sch-form-btn"
-              @click="modal = true"
+              @click="del"
             >删除</Button>
             <Modal
               v-model="modal"
@@ -182,7 +182,7 @@ export default {
       is_disabled: false,
       formItem: {
         schedule_name: '',
-        bar_color: 'red',
+        bar_color: '#ff0000',
         pin_flag: false
       },
       points: {
@@ -243,10 +243,12 @@ export default {
               .then(res => getData(res))
               .then(res => {
                 if (res.code === 'OK') {
-                  this.$Message.success('创建成功!')
+                  this.$Message.success(res.message)
                   // todo add to
+                } else {
+                  this.$Message.error(res.message)
                 }
-              }).catch(this.$Message.error('错误的参数!'))
+              })
           } else {
             // 修改
             d.delete_flag = false
@@ -275,36 +277,44 @@ export default {
       this.is_change = true
     },
     handleDelete () { },
-    del (is) {
-      const d = this.getPostData()
-      d.delete_flag = true
-      // 修改回收标记
-      // 修改和回收标记逻辑有问题
-        .changeSchdule(d)
-        .then(res => getData(res))
-        .then(res => {
-          const rb = {
-            user_id: this.$store.state.user.userId,
-            schedule_id: this.pickSchedule.schedule_id,
-            recycle_bin: true
-          }
-          if (res.code === 'OK') {
-            if (is) {
-              toRecycleBin(rb)
-                .then(res => getData(res))
-                .then(res => {
-                  if (res.code === 'OK') {
-                    this.$Message.success(res.message)
-                    this.$router.go(-1)
-                  }
-                })
-            } else {
-              rb.recycle_bin = false
-              toRecycleBin(rb)
-            }
-            this.$router.go(-1)
-          }
-        })
+    del () {
+      // const d = this.getPostData()
+      // d.delete_flag = true
+      // // 修改回收标记
+      // // 修改和回收标记逻辑有问题
+      // changeSchdule(d)
+      //   .then(res => getData(res))
+      //   .then(res => {
+      //     const rb = {
+      //       user_id: this.$store.state.user.userId,
+      //       schedule_id: this.pickSchedule.schedule_id,
+      //       recycle_bin: true
+      //     }
+      //     if (res.code === 'OK') {
+      //       if (is) {
+      //         toRecycleBin(rb)
+      //           .then(res => getData(res))
+      //           .then(res => {
+      //             if (res.code === 'OK') {
+      //               this.$Message.success(res.message)
+      //               this.$router.go(-1)
+      //             }
+      //           })
+      //       } else {
+      //         rb.recycle_bin = false
+      //         toRecycleBin(rb)
+      //       }
+      //       this.$router.go(-1)
+      //     }
+      //   })
+      const rb = {
+        user_id: this.$store.state.user.userId,
+        schedule_id: this.pickSchedule.schedule_id,
+        recycle_bin: false
+      }
+      toRecycleBin(rb).then(
+        this.$router.go(-1)
+      )
     }
   }
 }
