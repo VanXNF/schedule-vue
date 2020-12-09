@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-import { addTag, deleteTag, getData } from '@/api/data'
+import { addTag, deleteTag, getData, changeTag } from '@/api/data'
 export default {
   name: 'ChangeTag',
   data () {
@@ -89,12 +89,23 @@ export default {
     handleChangeTag (index) {
     // 验证
       this.changeTag[index].is_show = true
-    // todo 提交到后台
+      changeTag({
+        user_id: this.$store.state.user.userId,
+        tag_id: this.changeTag[index].tag_id,
+        tag_title: this.changeTag[index].tag_title
+      }).then(
+        res => getData(res)
+      )
+        .then(
+          res => {
+            if (res.code === 'OK') {
+              this.$Message.success(res.message)
+            }
+          }
+        )
     },
     deleteItem (it) {
-      console.log(it)
-      this.tagList.splice(it, 1)
-      this.changeTag.splice(it, 1)
+      console.log(this.changeTag)
       deleteTag({
         user_id: this.$store.state.user.userId,
         tag_id: this.changeTag[it].tag_id
@@ -109,6 +120,8 @@ export default {
             }
           }
         )
+      this.tagList.splice(it, 1)
+      this.changeTag.splice(it, 1)
     },
     handleCandle (i) {
       this.changeTag[i].tag_title = this.tagList[i].tag_title
