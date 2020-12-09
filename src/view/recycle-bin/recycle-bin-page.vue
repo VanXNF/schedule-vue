@@ -3,7 +3,7 @@
     <div>
       <div>
         <p>
-          日程
+          回收日程
         </p>
         <div>
           <schedule-pin :pin-list="scheduleList"/>
@@ -12,7 +12,7 @@
       <Divider></Divider>
       <div>
         <p>
-          记事
+          回收记事
         </p>
         <div>
           <note-pin :pin-list="noteList"/>
@@ -24,6 +24,7 @@
 <script>
 import NotePin from '../../components/note/note-pin.vue'
 import schedulePin from '../../components/schedule/schedule-pin.vue'
+import { getScheduleList, getData, getNoteList } from '@/api/data'
 export default {
   components: { schedulePin, NotePin },
   name: 'RecycleBbinPage',
@@ -34,14 +35,34 @@ export default {
     }
   },
   mounted () {
-    for (let i = 0; i < this.$store.state.app.scheduleList.length; i++) {
-      const e = this.$store.state.app.noteList[i]
-      this.scheduleList.push(e)
-    }
-    for (let i = 0; i < this.$store.state.app.noteList.length; i++) {
-      const e = this.$store.state.app.noteList[i]
-      this.noteList.push(e)
-    }
+    getScheduleList({
+      user_id: this.$store.state.user.userId,
+      status_flag: 'delete'
+    })
+      .then(
+        res => getData(res)
+      )
+      .then(
+        res => {
+          if (res.code === 'OK') {
+            this.scheduleList = res.data
+          }
+        })
+
+    getNoteList({
+      user_id: this.$store.state.user.userId,
+      tag_id: 0,
+      status_flag: 'delete'
+    })
+      .then(
+        res => getData(res)
+      )
+      .then(
+        res => {
+          if (res.code === 'OK') {
+            this.noteList = res.data
+          }
+        })
   }
 }
 </script>
