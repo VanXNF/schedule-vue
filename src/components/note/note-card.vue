@@ -35,7 +35,7 @@
           <div  class="ivu-note-card-btn">
 
             <add-tag @getTags="handleAddTag" :tag-id="note.tag_id" :is_disabled="is_disabled" ></add-tag>
-            <Button icon="md-backspace" type="text" size="small"  v-if="!is_disabled" @click="modal=true"></Button>
+            <Button icon="md-backspace" type="text" size="small"  v-if="!is_disabled" @click="handleDelete"></Button>
             <Button icon="md-checkmark" type="text" size="small"  v-if="!is_disabled" @click="handleSubmit"></Button>
             <Button icon="md-create" type="text" size="small"  v-if="is_disabled" @click="handleChange" ></Button>
 
@@ -143,6 +143,8 @@ export default {
             res => {
               if (res.code === 'OK') {
                 this.$Message.success(res.message)
+                // 构建对象
+                // this.$store.state.app.noteList.push(d)
               }
             }
           )
@@ -156,6 +158,8 @@ export default {
             res => {
               if (res.code === 'OK') {
                 this.$Message.success(res.message)
+                // const index = this.$store.state.app.noteList.indexOf(this.note)
+                // this.$store.state.app.noteList.splice(index, 1)
               }
             }
           )
@@ -163,41 +167,51 @@ export default {
       // 先提交todolist
       // 再提交note
     },
-    handleDelete (is) {
-      if (this.is_change) {
-        const d = this.getPostData()
-        d.note_id = this.note.note_id
-        d.delete_flag = true
-        // 修改回收标记
-        // 修改和回收标记逻辑有问题
-        changeNote(d)
-          .then(res => getData(res))
-          .then(res => {
-            const rb = {
-              user_id: this.$store.state.user.userId,
-              note_id: this.note.note_id,
-              recycle_bin: true
-            }
-            if (res.code === 'OK') {
-              if (is) {
-                toRecycleBinNote(rb)
-                  .then(res => getData(res))
-                  .then(res => {
-                    if (res.code === 'OK') {
-                      this.$Message.success(res.message)
-                      this.$router.go(-1)
-                    }
-                  })
-              } else {
-                rb.recycle_bin = false
-                toRecycleBinNote(rb)
-              }
-              this.$router.go(-1)
-            }
-          })
-      } else {
-        this.$router.go(-1)
+    handleDelete () {
+      // if (this.is_change) {
+      //   const d = this.getPostData()
+      //   d.note_id = this.note.note_id
+      //   d.delete_flag = true
+      //   // 修改回收标记
+      //   // 修改和回收标记逻辑有问题
+      //   changeNote(d)
+      //     .then(res => getData(res))
+      //     .then(res => {
+      //       const rb = {
+      //         user_id: this.$store.state.user.userId,
+      //         note_id: this.note.note_id,
+      //         recycle_bin: true
+      //       }
+      //       if (res.code === 'OK') {
+      //         if (is) {
+      //           toRecycleBinNote(rb)
+      //             .then(res => getData(res))
+      //             .then(res => {
+      //               if (res.code === 'OK') {
+      //                 this.$Message.success(res.message)
+      //                 this.$router.go(-1)
+      //               }
+      //             })
+      //         } else {
+      //           rb.recycle_bin = false
+      //           toRecycleBinNote(rb)
+      //         }
+      //         this.$router.go(-1)
+      //       }
+      //     })
+      // } else {
+      //   this.$router.go(-1)
+      // }
+      const rb = {
+        user_id: this.$store.state.user.userId,
+        note_id: this.note.note_id,
+        recycle_bin: false
       }
+      toRecycleBinNote(rb).then(
+        this.$router.go(-1)
+      )
+      const index = this.$store.state.app.noteList.indexOf(this.note)
+      this.$store.state.app.noteList.splice(index, 1)
     },
     handleChange () {
       this.is_disabled = false
