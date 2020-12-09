@@ -43,7 +43,7 @@ export default {
     return {
       is_disabled: false,
       is_show: true,
-      todoList: [],
+      // todoList: [],
       modal: false,
       formItem: {
         todoTitle: ''
@@ -89,10 +89,6 @@ export default {
     // get todolist
     if (this.is_pick) {
       this.is_disabled = true
-      for (let i = 0; i < this.todoItems.length; i++) {
-        const e = this.todoItems[i]
-        this.todoList.push(e)
-      }
     }
 
     // this.todoList = this.todo_list
@@ -100,6 +96,16 @@ export default {
   watch: {
     is_pick () {
       this.is_disabled = this.is_pick
+    }
+  },
+  computed: {
+    todoList () {
+      const arr = []
+      for (let i = 0; i < this.todoItems.length; i++) {
+        const e = this.todoItems[i]
+        arr.push(e)
+      }
+      return arr
     }
   }
 }
