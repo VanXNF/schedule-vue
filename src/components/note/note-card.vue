@@ -71,9 +71,11 @@ export default {
   data () {
     const conTodoList = todoList => {
       var str = ''
+      var c = ''
       for (let i = 0; i < todoList.length; i++) {
         const element = todoList[i]
-        str += (element + ',' + i.toString() + '#')
+        str += (c + element + ',0')
+        c = '#'
       }
       return str
     }
