@@ -55,13 +55,21 @@ export default {
         res => {
           if (res.code === 'OK') {
             this.$store.state.app.scheduleList = res.data
-            this.pinScheduleList = getSpecificScheduleOrNote(res.data, 'pin_flag', true)
+            getScheduleList({
+              user_id: this.$store.state.user.userId,
+              status_flag: 'pin'
+            }).then(
+              res => getData(res)
+            )
+              .then(res => {
+                this.pinScheduleList = res.data
+              })
           }
         }
       )
     getNoteList({
       user_id: this.$store.state.user.userId,
-      note_id: 0,
+      tag_id: 0,
       status_flag: ''
     })
       .then(
@@ -72,7 +80,16 @@ export default {
           if (res.code === 'OK') {
             this.$store.state.app.noteList = res.data
             // fix
-            this.pinNoteList = getSpecificScheduleOrNote(res.data, 'pin_flag', true)
+            getNoteList({
+              user_id: this.$store.state.user.userId,
+              tag_id: 0,
+              status_flag: 'pin'
+            })
+              .then(
+                res => {
+                  this.pinNoteList = res.data
+                }
+              )
           }
         }
       )
