@@ -6,6 +6,14 @@ const tagUrl = baseUrl + '/tag'
 const noteUrl = baseUrl + '/note'
 const todoUrl = baseUrl + '/todo'
 
+export const changeTag = (d) => {
+  return axios.request({
+    url: baseUrl + '/tag',
+    method: 'put',
+    data: d
+  })
+}
+
 export const getNote = (d) => {
   return axios.request({
     url: noteUrl,
@@ -148,6 +156,14 @@ export const getTagList = (d) => {
     url: tagUrl + '/list',
     method: 'get',
     params: d
+  })
+}
+
+export const getPinScheduleList = (p) => {
+  return axios.request({
+    url: scheduleUrl + '/list',
+    method: 'get',
+    params: p
   })
 }
 

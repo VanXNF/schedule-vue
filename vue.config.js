@@ -21,7 +21,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/*': {
-        target: 'http://www.gpu.vanxnf.top:10079'
+        target: 'http://localhost:10000'
       }
   }}
 }
