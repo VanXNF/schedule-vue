@@ -257,7 +257,9 @@ export default {
               .then(res => getData(res))
               .then(res => {
                 if (res.code === 'OK') {
-                  this.$Message.success('修改成功!')
+                  this.$Message.success(res.message)
+                } else {
+                  this.$Message.error(res.message)
                 }
               })
           }

@@ -64,10 +64,23 @@
           </FormItem>
           <FormItem>
             <Button
+              v-if="!is_disabled"
               type="primary"
               class="ivu-sch-form-btn"
               @click="handleSubmit('formItem')"
-            >创建</Button>
+            >确定</Button>
+            <Button
+              v-if="is_disabled"
+              type="primary"
+              class="ivu-sch-form-btn"
+              @click="handleChange"
+            >修改</Button>
+            <Button
+              v-if="is_disabled"
+              type="error"
+              class="ivu-sch-form-btn"
+              @click="del"
+            >删除</Button>
           </FormItem>
         </Form>
       </template>
@@ -77,7 +90,7 @@
 </template>
 
 <script>
-import { createSchdule, getData } from '@/api/data'
+import { createSchdule, getData, changeSchdule, toRecycleBin } from '@/api/data'
 export default {
   name: 'ScheduleFormTime',
   data () {
@@ -116,34 +129,73 @@ export default {
       this.is_disabled = true
     }
   },
+
   methods: {
+    del () {
+      const rb = {
+        user_id: this.$store.state.user.userId,
+        schedule_id: this.pickSchedule.schedule_id,
+        recycle_bin: false
+      }
+      toRecycleBin(rb).then(
+        this.$router.go(-1)
+      )
+    },
+    handleChange () {
+      this.is_disabled = false
+      this.is_change = true
+    },
     handleSubmit (name1) {
       Promise.all([this.$refs[name1].validate()])
         .then(
           res => {
             if (res[0]) {
-              createSchdule(
-                {
-                  user_id: 1,
+              if (!this.is_change) {
+                createSchdule(
+                  {
+                    user_id: this.$store.state.user.userId,
+                    schedule_name: this.formItem.schedule_name,
+                    start_point: new Date(),
+                    cur_point: new Date(),
+                    end_point: this.formItem.end_point,
+                    point_unit: ' ',
+                    bar_color: this.formItem.bar_color,
+                    pin_flag: this.formItem.pin_flag
+                  }
+                ).then(
+                  res => getData(res)
+                ).then(
+                  res => {
+                    if (res.code === 'OK') {
+                      this.$Message.success(res.message)
+                    } else {
+                      this.$Message.error(res.message)
+                    }
+                  }
+                )
+              } else {
+                changeSchdule({
+                  user_id: this.$store.state.user.userId,
                   schedule_name: this.formItem.schedule_name,
-                  start_point: new Date(),
+                  start_point: this.pickSchedule.start_point,
                   cur_point: new Date(),
                   end_point: this.formItem.end_point,
                   point_unit: ' ',
                   bar_color: this.formItem.bar_color,
                   pin_flag: this.formItem.pin_flag
-                }
-              ).then(
-                res => getData(res)
-              ).then(
-                res => {
-                  if (res.code === 'OK') {
-                    this.$Message.success(res.message)
-                  } else {
-                    this.$Message.error(res.message)
-                  }
-                }
-              )
+                })
+                  .then(
+                    res => getData(res)
+                  )
+                  .then(res => {
+                    if (res.code === 'OK') {
+                      this.$Message.success(res.message)
+                      // todo add to
+                    } else {
+                      this.$Message.error(res.message)
+                    }
+                  })
+              }
             } else {
               this.$Message.error('Fail!')
             }
