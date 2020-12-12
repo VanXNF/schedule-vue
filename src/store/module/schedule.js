@@ -31,11 +31,11 @@ export default {
       state.pinScheduleList.push(item)
     },
     // change
-    changeScheduleListItem (state, { oldItem, newItem }) {
-      changeListItem(state.scheduleList, { oldItem, newItem })
+    changeScheduleListItem (state, { oldItem, newItem, type }) {
+      changeListItem(state.scheduleList, { oldItem, newItem, type })
     },
-    changePinScheduleListItem (state, { oldItem, newItem }) {
-      changeListItem(state.pinScheduleList, { oldItem, newItem })
+    changePinScheduleListItem (state, { oldItem, newItem, type }) {
+      changeListItem(state.pinScheduleList, { oldItem, newItem, type })
     },
     // 删除
     deleteScheduleListItem (state, item) {
@@ -83,10 +83,10 @@ export default {
         getScheduleItem(data)
           .then(res => {
             const data = res.data
-            commit('changeScheduleListItem', { oldItem, newItem: data.data })
-            // if (data.data.pin_flag === 'true') {
-            //   commit('changePinScheduleListItem', { oldItem, newItem: data.data })
-            // }
+            commit('changeScheduleListItem', { oldItem, newItem: data.data, type: 'schedule_id' })
+            if (data.data.pin_flag === 'true') {
+              commit('changePinScheduleListItem', { oldItem, newItem: data.data, type: 'schedule_id' })
+            }
             resolve()
           }).catch(err => {
             reject(err)

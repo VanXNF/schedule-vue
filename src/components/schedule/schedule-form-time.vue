@@ -91,11 +91,16 @@
 
 <script>
 import { createSchdule, getData, changeSchdule, toRecycleBin } from '@/api/data'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 export default {
   name: 'ScheduleFormTime',
   data () {
+    const getEndDate = (date) => {
+      date.setDate(date.getDate() + 1)
+      return date
+    }
     return {
+      getEndDate,
       is_change: false,
       is_disabled: false,
       formItem: {
@@ -135,6 +140,10 @@ export default {
     ...mapMutations([
       'deleteScheduleListItem'
     ]),
+    ...mapActions([
+      'getScheduleItem',
+      'changeScheduleItem'
+    ]),
     del () {
       const rb = {
         user_id: this.$store.state.user.userId,
@@ -172,7 +181,7 @@ export default {
                     schedule_name: this.formItem.schedule_name,
                     start_point: new Date(),
                     cur_point: new Date(),
-                    end_point: this.formItem.end_point,
+                    end_point: this.getEndDate(this.formItem.end_point),
                     point_unit: ' ',
                     bar_color: this.formItem.bar_color,
                     pin_flag: this.formItem.pin_flag
@@ -182,6 +191,10 @@ export default {
                 ).then(
                   res => {
                     if (res.code === 'OK') {
+                      this.getScheduleItem({
+                        user_id: this.$store.state.user.userId,
+                        schedule_id: res.data
+                      })
                       this.$Message.success(res.message)
                     } else {
                       this.$Message.error(res.message)
@@ -191,19 +204,26 @@ export default {
               } else {
                 changeSchdule({
                   user_id: this.$store.state.user.userId,
+                  schedule_id: this.pickSchedule.schedule_id,
                   schedule_name: this.formItem.schedule_name,
                   start_point: this.pickSchedule.start_point,
                   cur_point: new Date(),
                   end_point: this.formItem.end_point,
                   point_unit: ' ',
                   bar_color: this.formItem.bar_color,
-                  pin_flag: this.formItem.pin_flag
+                  pin_flag: this.formItem.pin_flag,
+                  delete_flag: false
                 })
                   .then(
                     res => getData(res)
                   )
                   .then(res => {
                     if (res.code === 'OK') {
+                      this.changeScheduleItem({ data: {
+                        user_id: this.$store.state.user.userId,
+                        schedule_id: this.pickSchedule.schedule_id
+                      },
+                      oldItem: this.pickSchedule })
                       this.$Message.success(res.message)
                       // todo add to
                     } else {
