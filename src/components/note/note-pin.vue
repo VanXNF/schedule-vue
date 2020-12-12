@@ -1,7 +1,7 @@
 <template>
   <div class="ivu-sch-pin">
     <template v-for="item in pinList">
-      <note-min :key="item.note_id" :pin-note="item" :note-id="item.note_id"/>
+      <note-min :key="item.note_id" :pin-note="item" :note-id="item.note_id" :is_recycle="is_recycle"/>
     </template>
   </div>
 </template>
@@ -13,7 +13,8 @@ export default {
     pinList: {
       type: Array,
       default: () => []
-    }
+    },
+    is_recycle: false
   },
   components: {
     NoteMin

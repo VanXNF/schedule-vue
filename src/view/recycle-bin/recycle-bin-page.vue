@@ -6,7 +6,7 @@
           回收日程
         </p>
         <div>
-          <schedule-pin :pin-list="scheduleList"/>
+          <schedule-pin :pin-list="scheduleList" :is_recycle="true"/>
         </div>
       </div>
       <Divider></Divider>
@@ -15,7 +15,7 @@
           回收记事
         </p>
         <div>
-          <note-pin :pin-list="noteList"/>
+          <note-pin :pin-list="noteList" :is_recycle="true"/>
         </div>
       </div>
     </div>

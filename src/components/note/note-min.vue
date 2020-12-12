@@ -17,6 +17,7 @@
       </div>
       <div>
         <Button type="text" icon="ios-menu" :to="{name: 'change_note', params: {pickNote: pinNote}}" ></Button>
+        <Button v-if="is_recycle" ></Button>
       </div>
     </Card>
   </div>
@@ -32,9 +33,8 @@ export default {
   },
   props: {
     pinNote: '',
-    todoList: [
-    ],
-    noteId: ''
+    noteId: '',
+    is_recycle: false
   },
   methods: {
     handleChange (item) {
@@ -88,9 +88,18 @@ export default {
     //       }
     //     }
     //   )
-    this.todoList = this.pinNote.todo_list
-    for (let i = 0; i < this.todoList.length; i++) {
-      this.todoList[i].is_check = false
+    // this.todoList = this.pinNote.todo_list
+    // for (let i = 0; i < this.todoList.length; i++) {
+    //   this.todoList[i].is_check = false
+    // }
+  },
+  computed: {
+    todoList () {
+      let obj = JSON.parse(JSON.stringify(this.pinNote.todo_list))
+      for (let i = 0; i < obj.length; i++) {
+        obj[i].is_check = false
+      }
+      return obj
     }
   }
 }

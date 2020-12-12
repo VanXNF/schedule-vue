@@ -7,6 +7,7 @@
           {{pinSchedule.schedule_name}}
         </p>
       <Progress :percent="percentValue" :stroke-color="pinSchedule.bar_color" />
+      <Button v-if="is_recycle">恢复</Button>
     </Card>
     </template>
   </div>
@@ -16,7 +17,8 @@ import './schedule-min.less'
 export default {
   name: 'ScheduleMin',
   props: {
-    pinSchedule: ''
+    pinSchedule: '',
+    is_recycle: false
   },
   data () {
     return {

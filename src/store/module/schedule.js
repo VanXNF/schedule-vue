@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { getScheduleList, getData, getNoteList, getTagList, getScheduleItem } from '@/api/data'
+import { getScheduleList, getData, getNoteList, getTagList, getScheduleItem, getNoteItem } from '@/api/data'
 import { deleteListItem, changeListItem } from '@/libs/util'
 export default {
   state: {
@@ -40,6 +40,12 @@ export default {
     },
     addPinScheduleListItem (state, item) {
       state.pinScheduleList.push(item)
+    },
+    addNoteListItem (state, item) {
+      state.noteList.push(item)
+    },
+    addPinNoteListItem (state, item) {
+      state.pinNoteList.push(item)
     },
     // change
     changeScheduleListItem (state, { oldItem, newItem, type }) {
@@ -117,6 +123,7 @@ export default {
           })
       })
     },
+
     getNoteList ({ commit }, { user_id, tag_id, status_flag }) {
       return new Promise((resolve, reject) => {
         getNoteList({ user_id, tag_id, status_flag })
@@ -130,6 +137,21 @@ export default {
 
             } else if (status_flag === 'delete') {
 
+            }
+            resolve()
+          }).catch(err => {
+            reject(err)
+          })
+      })
+    },
+    getNoteItem ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        getNoteItem(data)
+          .then(res => {
+            const data = res.data
+            commit('addNoteListItem', data.data)
+            if (data.data.pin_flag === 'true') {
+              commit('addPinNoteListItem', data.data)
             }
             resolve()
           }).catch(err => {

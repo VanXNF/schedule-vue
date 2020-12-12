@@ -8,6 +8,7 @@
               v-model="pin_flag"
               :disabled="is_disabled"
               class="ivu-check-box"
+              style="margin-left: 5px;"
         >
         <Icon
                 type="md-pricetag"
@@ -28,7 +29,7 @@
             <p v-show="is_pick">
               修改时间
             </p>
-            <p style="margin-top: 3px">
+            <p v-show="is_pick" style="margin-top: 3px">
               {{modifyTime}}
             </p>
           </div>
@@ -59,7 +60,7 @@
 </template>
 <script>
 import TodoList from './todo-list.vue'
-
+import { mapMutations, mapActions } from 'vuex'
 import AddTag from '../tag/add-tag.vue'
 import { changeNote, getData, toRecycleBinNote, createNote } from '@/api/data'
 export default {
@@ -114,6 +115,13 @@ export default {
     AddTag
   },
   methods: {
+    ...mapMutations([
+      'deleteScheduleListItem'
+    ]),
+    ...mapActions([
+      'getNoteItem',
+      'changeNoteItem'
+    ]),
     handleAddTag (tags) {
       this.pickTags = []
       this.pickTags.push(tags)
@@ -142,6 +150,10 @@ export default {
           ).then(
             res => {
               if (res.code === 'OK') {
+                this.getNoteItem({
+                  user_id: this.$store.state.user.userId,
+                  note_id: res.data
+                })
                 this.$Message.success(res.message)
                 // 构建对象
                 // this.$store.state.app.noteList.push(d)
@@ -150,13 +162,19 @@ export default {
           )
       } else {
         d.note_id = this.note.note_id
-        d.delete_flag = false
+        d.delete_flag = true
         changeNote(d)
           .then(
             res => getData(res)
           ).then(
             res => {
               if (res.code === 'OK') {
+                this.changeNoteItem({
+                  data: {
+                    user_id: this.$store.state.user.userId,
+                    note_id: this.pickNote.note_id
+                  },
+                  oldItem: this.pickNote })
                 this.$Message.success(res.message)
                 // const index = this.$store.state.app.noteList.indexOf(this.note)
                 // this.$store.state.app.noteList.splice(index, 1)
