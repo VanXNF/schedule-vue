@@ -15,8 +15,8 @@
 </template>
 <script>
 
-import { getSpecificScheduleOrNote } from '@/libs/util'
 import NotePin from '../../components/note/note-pin.vue'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'NotePage',
@@ -25,23 +25,22 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
 
+    ]),
+    ...mapActions([
+      'getNoteList'
+    ])
   },
   components: {
     NotePin
   },
   mounted () {
-    let obj = JSON.parse(JSON.stringify(this.$store.state.app.noteList))
-    obj.sort(
-      (a, b) => {
-        let aa = new Date(a)
-        let bb = new Date(b)
-        if (aa < bb) return -1
-        if (aa > bb) return 1
-        return 0
-      }
-    )
-    this.noteListByDate = obj
+    this.getNoteList({
+      user_id: this.$store.state.user.userId,
+      tag_id: 1,
+      status_flag: ''
+    })
   },
   computed: {
     pinNoteList () {
