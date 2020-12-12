@@ -4,6 +4,11 @@ import config from '@/config'
 import { forEach, hasOneOf, objEqual } from '@/libs/tools'
 const { title, cookieExpires, useI18n } = config
 
+export const deleteListItem = (list, item) => {
+  const index = list.indexOf(item)
+  list.splice(index, 1)
+}
+
 export const TOKEN_KEY = 'token'
 export const USER_ID_KEY = 'user_id'
 export const tagListToMenuList = (tagList) => {

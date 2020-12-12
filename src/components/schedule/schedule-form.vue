@@ -153,6 +153,7 @@ import {
   changeSchdule,
   toRecycleBin
 } from '@/api/data'
+import { mapMutations } from 'vuex'
 export default {
   name: 'ScheduleForm',
   data () {
@@ -231,6 +232,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'deleteScheduleListItem'
+    ]),
     handleSubmit (name1, name2) {
       Promise.all([
         this.$refs[name1].validate(),
@@ -314,9 +318,20 @@ export default {
         schedule_id: this.pickSchedule.schedule_id,
         recycle_bin: false
       }
-      toRecycleBin(rb).then(
-        this.$router.go(-1)
-      )
+      toRecycleBin(rb)
+        .then(
+          res => getData(res)
+        ).then(
+          res => {
+            if (res.code) {
+              this.$Message.success(res.message)
+              this.deleteScheduleListItem(this.pickSchedule)
+              this.$router.go(-1)
+            } else {
+              this.$Message.error(res.message)
+            }
+          }
+        )
     }
   }
 }

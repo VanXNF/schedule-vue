@@ -91,6 +91,7 @@
 
 <script>
 import { createSchdule, getData, changeSchdule, toRecycleBin } from '@/api/data'
+import { mapMutations } from 'vuex'
 export default {
   name: 'ScheduleFormTime',
   data () {
@@ -131,15 +132,29 @@ export default {
   },
 
   methods: {
+    ...mapMutations([
+      'deleteScheduleListItem'
+    ]),
     del () {
       const rb = {
         user_id: this.$store.state.user.userId,
         schedule_id: this.pickSchedule.schedule_id,
         recycle_bin: false
       }
-      toRecycleBin(rb).then(
-        this.$router.go(-1)
-      )
+      toRecycleBin(rb)
+        .then(
+          res => getData(res)
+        ).then(
+          res => {
+            if (res.code === 'OK') {
+              this.$Message.success(res.message)
+              this.deleteScheduleListItem(this.pickSchedule)
+              this.$router.go(-1)
+            } else {
+              this.$Message.error(res.message)
+            }
+          }
+        )
     },
     handleChange () {
       this.is_disabled = false

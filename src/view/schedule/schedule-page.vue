@@ -30,18 +30,18 @@ export default {
     SchedulePin
   },
   mounted () {
-    this.pinScheduleList = getSpecificScheduleOrNote(this.$store.state.app.scheduleList, 'pin_flag', true)
-    let obj = JSON.parse(JSON.stringify(this.$store.state.app.scheduleList))
-    obj.sort(
-      (a, b) => {
-        let aa = new Date(a)
-        let bb = new Date(b)
-        if (aa < bb) return -1
-        if (aa > bb) return 1
-        return 0
-      }
-    )
-    this.scheduleListByDate = obj
+    this.pinScheduleList = this.$store.state.schedule.pinScheduleList
+    // let obj = JSON.parse(JSON.stringify(this.$store.state.app.scheduleList))
+    // obj.sort(
+    //   (a, b) => {
+    //     let aa = new Date(a)
+    //     let bb = new Date(b)
+    //     if (aa < bb) return -1
+    //     if (aa > bb) return 1
+    //     return 0
+    //   }
+    // )
+    // this.scheduleListByDate = obj
   }
 }
 </script>

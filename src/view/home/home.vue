@@ -20,9 +20,10 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
+
+import { mapActions, mapMutations } from 'vuex'
 import SchedulePin from '../../components/schedule/schedule-pin.vue'
-import { getScheduleList, getData, getNoteList, getTagList } from '@/api/data'
+import { getData, getNoteList, getTagList } from '@/api/data'
 import { getSpecificScheduleOrNote } from '@/libs/util'
 import NotePin from '../../components/note/note-pin.vue'
 
@@ -41,32 +42,24 @@ export default {
   methods: {
     ...mapMutations([
       'setTagList'
+    ]),
+    ...mapActions([
+      'getScheduleList'
     ])
   },
   mounted () {
-    getScheduleList({
+    this.getScheduleList({
       user_id: this.$store.state.user.userId,
       status_flag: ''
     })
-      .then(
-        res => getData(res)
-      )
-      .then(
-        res => {
-          if (res.code === 'OK') {
-            this.$store.state.app.scheduleList = res.data
-            getScheduleList({
-              user_id: this.$store.state.user.userId,
-              status_flag: 'pin'
-            }).then(
-              res => getData(res)
-            )
-              .then(res => {
-                this.pinScheduleList = res.data
-              })
-          }
-        }
-      )
+    this.getScheduleList({
+      user_id: this.$store.state.user.userId,
+      status_flag: 'pin'
+    }).then(
+      res => {
+        this.pinScheduleList = this.$store.state.schedule.pinScheduleList
+      }
+    )
     getNoteList({
       user_id: this.$store.state.user.userId,
       tag_id: 0,

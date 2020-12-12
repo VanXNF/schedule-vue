@@ -89,9 +89,6 @@ export default {
     },
     setHasReadErrorLoggerStatus (state, status = true) {
       state.hasReadErrorPage = status
-    },
-    setTagList (state, list) {
-      state.tagList = list
     }
   },
   actions: {
