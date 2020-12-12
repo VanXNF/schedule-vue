@@ -22,8 +22,6 @@ export default {
   name: 'NotePage',
   data () {
     return {
-      pinNoteList: [],
-      noteListByDate: []
     }
   },
   methods: {
@@ -33,7 +31,6 @@ export default {
     NotePin
   },
   mounted () {
-    this.pinNoteList = getSpecificScheduleOrNote(this.$store.state.app.noteList, 'pin_flag', true)
     let obj = JSON.parse(JSON.stringify(this.$store.state.app.noteList))
     obj.sort(
       (a, b) => {
@@ -45,6 +42,24 @@ export default {
       }
     )
     this.noteListByDate = obj
+  },
+  computed: {
+    pinNoteList () {
+      return this.$store.state.schedule.pinNoteList
+    },
+    noteListByDate () {
+      let obj = JSON.parse(JSON.stringify(this.$store.state.schedule.noteList))
+      obj.sort(
+        (a, b) => {
+          let aa = new Date(a)
+          let bb = new Date(b)
+          if (aa < bb) return -1
+          if (aa > bb) return 1
+          return 0
+        }
+      )
+      return obj
+    }
   }
 }
 </script>
