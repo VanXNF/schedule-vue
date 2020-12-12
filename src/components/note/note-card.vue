@@ -29,7 +29,7 @@
               修改时间
             </p>
             <p style="margin-top: 3px">
-              {{note.modify_time}}
+              {{modifyTime}}
             </p>
           </div>
           <div  class="ivu-note-card-btn">
@@ -229,6 +229,11 @@ export default {
         const e = this.note.todo_list[i]
         this.todoList.push(e.todo_item_name)
       }
+    }
+  },
+  computed: {
+    modifyTime () {
+      return new Date(this.note.modify_time).toLocaleString()
     }
   }
 }
