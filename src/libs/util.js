@@ -4,6 +4,13 @@ import config from '@/config'
 import { forEach, hasOneOf, objEqual } from '@/libs/tools'
 const { title, cookieExpires, useI18n } = config
 
+export const changeListItem = (list, { oldItem, newItem }) => {
+  const index = list.map(e => e.schedule_id).indexOf(oldItem.schedule_id)
+  if (index > 0) {
+    list.splice(index, 1, newItem)
+  }
+}
+
 export const deleteListItem = (list, item) => {
   const index = list.indexOf(item)
   list.splice(index, 1)

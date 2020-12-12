@@ -6,6 +6,14 @@ const tagUrl = baseUrl + '/tag'
 const noteUrl = baseUrl + '/note'
 const todoUrl = baseUrl + '/todo'
 
+export const getScheduleItem = (p) => {
+  return axios.request({
+    url: scheduleUrl,
+    method: 'get',
+    params: p
+  })
+}
+
 export const changeTag = (d) => {
   return axios.request({
     url: baseUrl + '/tag',

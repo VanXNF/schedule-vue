@@ -153,7 +153,7 @@ import {
   changeSchdule,
   toRecycleBin
 } from '@/api/data'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 export default {
   name: 'ScheduleForm',
   data () {
@@ -223,7 +223,7 @@ export default {
     if (this.is_pick) {
       this.formItem.schedule_name = this.pickSchedule.schedule_name
       this.formItem.bar_color = this.pickSchedule.bar_color
-      this.formItem.pin_flag = this.pickSchedule.pin_flag
+      this.formItem.pin_flag = (this.pickSchedule.pin_flag === 'true')
       this.points.start_point = this.pickSchedule.start_point
       this.points.cur_point = this.pickSchedule.cur_point
       this.points.end_point = this.pickSchedule.end_point
@@ -234,6 +234,10 @@ export default {
   methods: {
     ...mapMutations([
       'deleteScheduleListItem'
+    ]),
+    ...mapActions([
+      'getScheduleItem',
+      'changeScheduleItem'
     ]),
     handleSubmit (name1, name2) {
       Promise.all([
@@ -247,6 +251,10 @@ export default {
               .then(res => getData(res))
               .then(res => {
                 if (res.code === 'OK') {
+                  this.getScheduleItem({
+                    user_id: this.$store.state.user.userId,
+                    schedule_id: res.data
+                  })
                   this.$Message.success(res.message)
                   // todo add to
                 } else {
@@ -261,7 +269,13 @@ export default {
               .then(res => getData(res))
               .then(res => {
                 if (res.code === 'OK') {
+                  this.changeScheduleItem({ data: {
+                    user_id: this.$store.state.user.userId,
+                    schedule_id: this.pickSchedule.schedule_id
+                  },
+                  oldItem: this.pickSchedule })
                   this.$Message.success(res.message)
+                  this.$router.go(-1)
                 } else {
                   this.$Message.error(res.message)
                 }

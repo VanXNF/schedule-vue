@@ -125,7 +125,7 @@ export default {
     if (this.is_pick) {
       this.formItem.schedule_name = this.pickSchedule.schedule_name
       this.formItem.bar_color = this.pickSchedule.bar_color
-      this.formItem.pin_flag = this.pickSchedule.pin_flag
+      this.formItem.pin_flag = (this.pickSchedule.pin_flag === 'true')
       this.formItem.end_point = this.pickSchedule.end_point
       this.is_disabled = true
     }
