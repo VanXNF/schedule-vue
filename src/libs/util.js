@@ -8,7 +8,9 @@ export const changeListItem = (list, { oldItem, newItem, type }) => {
   const index = list.map(e => e[type]).indexOf(oldItem[type])
   if (index > 0) {
     list.splice(index, 1, newItem)
+    return true
   }
+  return false
 }
 
 export const deleteListItem = (list, item) => {

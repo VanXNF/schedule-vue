@@ -263,7 +263,7 @@ export default {
               })
           } else {
             // 修改
-            d.delete_flag = false
+            d.delete_flag = true
             d.schedule_id = this.pickSchedule.schedule_id
             changeSchdule(d)
               .then(res => getData(res))

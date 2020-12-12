@@ -31,8 +31,7 @@ export default {
   name: 'home',
   data () {
     return {
-      pinScheduleList: [],
-      pinNoteList: []
+
     }
   },
   components: {
@@ -44,44 +43,20 @@ export default {
       'setTagList'
     ]),
     ...mapActions([
-      'getScheduleList'
+      'getScheduleList',
+      'getNoteList'
     ])
   },
   mounted () {
     this.getScheduleList({
       user_id: this.$store.state.user.userId,
       status_flag: 'pin'
-    }).then(
-      res => {
-        this.pinScheduleList = this.$store.state.schedule.pinScheduleList
-      }
-    )
-    getNoteList({
-      user_id: this.$store.state.user.userId,
-      tag_id: 0,
-      status_flag: ''
     })
-      .then(
-        res => getData(res)
-      )
-      .then(
-        res => {
-          if (res.code === 'OK') {
-            this.$store.state.app.noteList = res.data
-            // fix
-            getNoteList({
-              user_id: this.$store.state.user.userId,
-              tag_id: 0,
-              status_flag: 'pin'
-            })
-              .then(
-                res => {
-                  this.pinNoteList = res.data
-                }
-              )
-          }
-        }
-      )
+    this.getNoteList({
+      user_id: this.$store.state.user.userId,
+      tag_id: 1,
+      status_flag: 'pin'
+    })
     getTagList({
       user_id: this.$store.state.user.userId
     }).then(
@@ -94,12 +69,15 @@ export default {
           }
         }
       )
+  },
+  computed: {
+    pinScheduleList () {
+      return this.$store.state.schedule.pinScheduleList
+    },
+    pinNoteList () {
+      return this.$store.state.schedule.pinNoteList
+    }
   }
-  // computed: {
-  //   updatePinScheduleList() {
-  //     this.pinScheduleList = getSpecificScheduleOrNote()
-  //   }
-  // }
 }
 </script>
 <style lang="less" >
