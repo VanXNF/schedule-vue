@@ -50,10 +50,6 @@ export default {
   mounted () {
     this.getScheduleList({
       user_id: this.$store.state.user.userId,
-      status_flag: ''
-    })
-    this.getScheduleList({
-      user_id: this.$store.state.user.userId,
       status_flag: 'pin'
     }).then(
       res => {

@@ -14,34 +14,43 @@
 <script>
 import SchedulePin from '../../components/schedule/schedule-pin.vue'
 import { getSpecificScheduleOrNote } from '@/libs/util'
-
+import { mapActions } from 'vuex'
 export default {
   name: 'schedule',
   data () {
     return {
-      pinScheduleList: [],
-      scheduleListByDate: []
+      pinScheduleList: []
     }
   },
   methods: {
-
+    ...mapActions([
+      'getScheduleList'
+    ])
   },
   components: {
     SchedulePin
   },
   mounted () {
     this.pinScheduleList = this.$store.state.schedule.pinScheduleList
-    // let obj = JSON.parse(JSON.stringify(this.$store.state.app.scheduleList))
-    // obj.sort(
-    //   (a, b) => {
-    //     let aa = new Date(a)
-    //     let bb = new Date(b)
-    //     if (aa < bb) return -1
-    //     if (aa > bb) return 1
-    //     return 0
-    //   }
-    // )
-    // this.scheduleListByDate = obj
+    this.getScheduleList({
+      user_id: this.$store.state.user.userId,
+      status_flag: ''
+    })
+  },
+  computed: {
+    scheduleListByDate () {
+      let obj = JSON.parse(JSON.stringify(this.$store.state.schedule.scheduleList))
+      obj.sort(
+        (a, b) => {
+          let aa = new Date(a)
+          let bb = new Date(b)
+          if (aa < bb) return -1
+          if (aa > bb) return 1
+          return 0
+        }
+      )
+      return obj
+    }
   }
 }
 </script>
