@@ -38,7 +38,7 @@ export default {
   mounted () {
     this.getNoteList({
       user_id: this.$store.state.user.userId,
-      tag_id: 1,
+      tag_id: 0,
       status_flag: ''
     })
   },
@@ -50,8 +50,8 @@ export default {
       let obj = JSON.parse(JSON.stringify(this.$store.state.schedule.noteList))
       obj.sort(
         (a, b) => {
-          let aa = new Date(a)
-          let bb = new Date(b)
+          let aa = new Date(a.modify_time)
+          let bb = new Date(b.modify_time)
           if (aa < bb) return -1
           if (aa > bb) return 1
           return 0

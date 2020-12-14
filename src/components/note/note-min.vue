@@ -7,7 +7,7 @@
           <!-- {{noteTitle}} -->
           {{pinNote.note_title}}
       </p>
-      <div>
+      <div class="p-div">
         <ul>
          <p v-for="(item, i ) in todoList" :key="i" class="ivu-c-note-card-li">
           <Checkbox v-model="item.is_check" @on-change="handleChange(item)" ></Checkbox>
@@ -15,7 +15,7 @@
           </p>
         </ul>
       </div>
-      <div>
+      <div class="button-div">
         <Button type="text" icon="ios-menu" :to="{name: 'change_note', params: {pickNote: pinNote}}" ></Button>
         <Button v-if="is_recycle" ></Button>
       </div>
@@ -106,12 +106,21 @@ export default {
 </script>
 <style lang="less" >
 .ivu-note-min{
-  witdh: 500px;
-  margin: a auto;
+  width: 200px;
+  height: 200px;
   float: left;
   margin-right: 10px;
   .ivu-card{
     background: yellow;
+  }
+  .button-div{
+    margin-bottom: 5px;
+  }
+  .p-div{
+    margin-bottom: 20px;
+  }
+  .ivu-c-note-card-li{
+    margin-bottom: 10px;
   }
 }
 
