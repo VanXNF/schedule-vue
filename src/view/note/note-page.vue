@@ -52,8 +52,8 @@ export default {
         (a, b) => {
           let aa = new Date(a.modify_time)
           let bb = new Date(b.modify_time)
-          if (aa < bb) return -1
-          if (aa > bb) return 1
+          if (aa < bb) return 1
+          if (aa > bb) return -1
           return 0
         }
       )

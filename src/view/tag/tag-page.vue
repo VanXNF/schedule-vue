@@ -15,25 +15,36 @@
 <script>
 import ChangeTag from '_c/tag/change-tag.vue'
 import NotePin from '../../components/note/note-pin.vue'
+import { mapActions } from 'vuex'
 // import { getNoteListByTagId, getData } from '@/api/data'
 export default {
   name: 'TagPage',
   data () {
     return {
-      tagList: [],
-      noteListByTag: {}
+
     }
+  },
+  methods: {
+    ...mapActions([
+      'getTagList'
+    ])
   },
   components: {
     ChangeTag,
     NotePin
   },
   mounted () {
-    this.tagList = this.$store.state.app.tagList
-    this.noteListByTag = {}
-    for (let i = 0; i < this.tagList.length; i++) {
-      const e = this.tagList[i]
-      this.noteListByTag[e.tag_id] = []
+    this.getTagList(this.$store.state.user.userId)
+  },
+  computed: {
+    tagList () {
+      return this.$store.state.schedule.tagList
+    },
+    noteListByTag () {
+      let noteListByTag = {}
+      for (let i = 0; i < this.tagList.length; i++) {
+        const e = this.tagList[i]
+        noteListByTag[e.tag_id] = []
       // getNoteListByTagId({
       //   user_id: this.$store.state.user.userId,
       //   tag_id: e.tag_id,
@@ -49,13 +60,15 @@ export default {
       //       }
       //     }
       //   )
-    }
-    // noteListByTag = {tag_1: pinlist}
-    for (let j = 0; j < this.$store.state.app.noteList.length; j++) {
-      const ee = this.$store.state.app.noteList[j]
-      if (ee.tag_id) {
-        this.noteListByTag[ee.tag_id].push(ee)
       }
+      // noteListByTag = {tag_1: pinlist}
+      for (let j = 0; j < this.$store.state.schedule.noteList.length; j++) {
+        const ee = this.$store.state.schedule.noteList[j]
+        if (ee.tag_id) {
+          noteListByTag[ee.tag_id].push(ee)
+        }
+      }
+      return noteListByTag
     }
   }
 }

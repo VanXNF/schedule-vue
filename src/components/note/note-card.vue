@@ -5,7 +5,7 @@
         <div class="ivu-c-note-card-div11">
         <Input v-model="note.note_title" placeholder="请输入记事名称" :disabled="is_disabled" style="width: 250px;" />
         <Checkbox
-              v-model="pin_flag"
+              v-model="note.pin_flag"
               :disabled="is_disabled"
               class="ivu-check-box"
               style="margin-left: 5px;"
@@ -86,7 +86,7 @@ export default {
         user_id: this.$store.state.user.userId,
         note_title: this.note.note_title,
         remarks: this.note.remarks,
-        pin_flag: false,
+        pin_flag: this.note.pin_flag,
         tag_id: this.tagId,
         todo_list: this.conTodoList(this.todoList)
       }
@@ -94,6 +94,7 @@ export default {
     return {
       getPostData,
       conTodoList,
+
       is_disabled: false,
       is_change: false,
       modal: false,
@@ -104,6 +105,7 @@ export default {
         todo_id: '',
         remarks: '',
         tag_id: '',
+        pin_flag: false,
         todo_list: []
       },
       todoList: [],
@@ -120,6 +122,7 @@ export default {
     ]),
     ...mapActions([
       'getNoteItem',
+      'changeNoteItem',
       'changeNoteItem'
     ]),
     handleAddTag (tags) {

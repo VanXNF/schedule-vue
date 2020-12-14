@@ -64,6 +64,9 @@ export default {
     },
     deletePinScheduleListItem (state, item) {
       deleteListItem(state.pinScheduleList, item)
+    },
+    deleteTagListItem (state, item) {
+      deleteListItem(state.tagList, item)
     }
   },
   actions: {
@@ -153,6 +156,39 @@ export default {
             if (data.data.pin_flag === 'true') {
               commit('addPinNoteListItem', data.data)
             }
+            resolve()
+          }).catch(err => {
+            reject(err)
+          })
+      })
+    },
+    changeNoteItem ({ state, commit }, { data, oldItem }) {
+      return new Promise((resolve, reject) => {
+        getNoteItem(data)
+          .then(res => {
+            const data = res.data
+            commit('changeNoteListItem', { oldItem, newItem: data.data, type: 'note_id' })
+            if (state.noteList.map(e => e['note_id']).indexOf(oldItem['note_id']) !== -1 && data.data.pin_flag === 'true') {
+              commit('addPinNoteListItem', data.data)
+            }
+            if (data.data.pin_flag === 'true') {
+              commit('changePinNoteListItem', { oldItem, newItem: data.data, type: 'note_id' })
+            }
+            if (state.pinNoteList.map(e => e['note_id']).indexOf(oldItem['note_id']) !== -1 && data.data.pin_flag === 'false') {
+              commit('deletePinNoteListItem', data.data)
+            }
+            resolve()
+          }).catch(err => {
+            reject(err)
+          })
+      })
+    },
+    getTagList ({ commit }, { user_id, tag_id, status_flag }) {
+      return new Promise((resolve, reject) => {
+        getTagList(user_id)
+          .then(res => {
+            const data = res.data
+            commit('setTagList', data.data)
             resolve()
           }).catch(err => {
             reject(err)

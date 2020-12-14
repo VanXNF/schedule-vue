@@ -4,22 +4,22 @@
         <Form ref="formItem" :model="formItem" :rules="ruleInline" :label-width="30">
           <FormItem prop="tagName">
             <Input v-model="formItem.tagName" style="width: auto;"/>
-            <Button type="text" @click="ok('formItem')">新建标签</Button>
+            <Button type="primary" @click="ok('formItem')">新建标签</Button>
           </FormItem>
         </Form>
       <div>
-        <div>
+        <div class="ivu-tag-div1">
           <div v-for="(item, i) in changeTag" :key="i">
-            <div v-if="item.is_show">
+            <div v-if="item.is_show" class="ivu-tag-div2">
               <Icon type="md-pricetag" />
               <span>{{item.tag_title}}</span>
-              <Button icon="md-create" type="text" size="small" @click="handleChange(item)" ></Button>
-              <Button icon="md-backspace" type="text" size="small" @click="deleteItem(i)" ></Button>
+              <Button  type="primary" size="small" @click="handleChange(item)" >修改</Button>
+              <Button  type="error" size="small" @click="deleteItem(i)" >删除</Button>
             </div>
-            <div v-if="!item.is_show" >
+            <div v-if="!item.is_show" class="ivu-tag-div2" >
               <Input v-model="item.tag_title" style="width: auto;"/>
-              <Button type="primary" @click="handleChangeTag(i)" size="large" >确定</Button>
-              <Button type="primary" @click="handleCandle(i)" size="large" >返回</Button>
+              <Button type="primary" @click="handleChangeTag(i)" style="margin-right: 10px;" >确定</Button>
+              <Button type="primary" @click="handleCandle(i)" >返回</Button>
 
               <!-- <Icon type="md-return-left" /> -->
             </div>
@@ -68,7 +68,9 @@ export default {
                 res => {
                   if (res.code === 'OK') {
                     this.$Message.success(res.message)
-                    this.$router.go(-1)
+                    this.$router.push({
+                      name: 'home'
+                    })
                   }
                 }
               )
@@ -100,6 +102,9 @@ export default {
           res => {
             if (res.code === 'OK') {
               this.$Message.success(res.message)
+              this.$router.push({
+                name: 'home'
+              })
             }
           }
         )
@@ -129,7 +134,7 @@ export default {
     }
   },
   mounted () {
-    this.tagList = this.$store.state.app.tagList
+    this.tagList = this.$store.state.schedule.tagList
     for (let i = 0; i < this.tagList.length; i++) {
       let o = { tag_id: this.tagList[i].tag_id, tag_title: this.tagList[i].tag_title, is_show: true, index: i }
       this.changeTag.push(o)
