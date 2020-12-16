@@ -16,14 +16,14 @@
         </ul>
       </div>
       <div class="button-div">
-        <Button type="text" icon="ios-menu" :to="{name: 'change_note', params: {pickNote: pinNote}}" ></Button>
+        <Button type="text" :to="{name: 'change_note', params: {pickNote: pinNote}}" >详情</Button>
         <Button v-if="is_recycle" ></Button>
       </div>
     </Card>
   </div>
 </template>
 <script>
-import { getData, deleteTodoItem } from '@/api/data'
+import { getData, restoreNote, changeNote } from '@/api/data'
 export default {
   name: 'NoteMin',
   data () {
@@ -64,9 +64,54 @@ export default {
         //       }
         //     }
         //   )
-        this.$Message.success('成功')
         this.todoList.splice(i, 1)
+        const d = {
+          user_id: this.$store.state.user.userId,
+          note_title: this.pinNote.note_title,
+          remarks: this.pinNote.remarks,
+          pin_flag: this.pinNote.pin_flag,
+          tag_id: this.tagId,
+          todo_list: this.conTodoList(this.todoList)
+        }
+        changeNote(d)
+          .then(
+            res => getData(res)
+          ).then(
+            res => {
+              if (res.code === 'OK') {
+                this.changeNoteItem({
+                  data: {
+                    user_id: this.$store.state.user.userId,
+                    note_id: this.pickNote.note_id
+                  },
+                  oldItem: this.pickNote })
+                this.$Message.success(res.message)
+                // const index = this.$store.state.app.noteList.indexOf(this.note)
+                // this.$store.state.app.noteList.splice(index, 1)
+              } else this.$Message.error(res.message)
+            }
+          )
       }
+    },
+    restore () {
+      restoreNote({
+        user_id: this.$store.state.user.userId,
+        note_id: this.pinNote.note_id
+      }).then(
+        res => getData(res)
+      )
+        .then(
+          res => {
+            if (res.code === 'OK') {
+              this.$Message.success(res.message)
+              this.$router.push({
+                name: 'home'
+              })
+            } else {
+              this.$Message.error(res.message)
+            }
+          }
+        )
     }
   },
   mounted () {

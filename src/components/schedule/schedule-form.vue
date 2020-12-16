@@ -337,7 +337,7 @@ export default {
           res => getData(res)
         ).then(
           res => {
-            if (res.code) {
+            if (res.code === 'OK') {
               this.$Message.success(res.message)
               this.deleteScheduleListItem(this.pickSchedule)
               this.$router.go(-1)

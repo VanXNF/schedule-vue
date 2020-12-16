@@ -6,6 +6,22 @@ const tagUrl = baseUrl + '/tag'
 const noteUrl = baseUrl + '/note'
 const todoUrl = baseUrl + '/todo'
 
+export const restoreNote = (d) => {
+  return axios.request({
+    url: noteUrl + '/restore',
+    method: 'put',
+    data: d
+  })
+}
+
+export const restoreSchedule = (d) => {
+  return axios.request({
+    url: scheduleUrl + '/restore',
+    method: 'put',
+    data: d
+  })
+}
+
 export const getNoteItem = (p) => {
   return axios.request({
     url: noteUrl,

@@ -160,7 +160,7 @@ export default {
                 this.$Message.success(res.message)
                 // 构建对象
                 // this.$store.state.app.noteList.push(d)
-              }
+              } else this.$Message.error(res.message)
             }
           )
       } else {
@@ -181,7 +181,7 @@ export default {
                 this.$Message.success(res.message)
                 // const index = this.$store.state.app.noteList.indexOf(this.note)
                 // this.$store.state.app.noteList.splice(index, 1)
-              }
+              } else this.$Message.error(res.message)
             }
           )
       }

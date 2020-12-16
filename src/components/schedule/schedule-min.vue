@@ -1,19 +1,21 @@
 <template>
   <div class="ivu-sch-min">
     <template>
-    <Card class="ivu-sch-min-card" :to="{name: 'change_schedule', params: {Schedule: pinSchedule}}">
+    <Card class="ivu-sch-min-card" >
       <p slot="title">
         <Icon type="md-calendar"></Icon>
           {{pinSchedule.schedule_name}}
         </p>
       <Progress :percent="percentValue" :stroke-color="pinSchedule.bar_color" />
-      <Button v-if="is_recycle">恢复</Button>
+      <Button type="text" :to="{name: 'change_schedule', params: {Schedule: pinSchedule}}" >详情</Button>
+      <Button v-if="is_recycle" @click="restore">恢复</Button>
     </Card>
     </template>
   </div>
 </template>
 <script>
 import './schedule-min.less'
+import { restoreSchedule, getData } from '@/api/data'
 export default {
   name: 'ScheduleMin',
   props: {
@@ -25,6 +27,28 @@ export default {
       options: {
         pathColors: ['white', 'rgb(90, 146, 173)']
       }
+    }
+  },
+  methods: {
+    restore () {
+      restoreSchedule({
+        user_id: this.$store.state.user.userId,
+        schedule_id: this.pinSchedule.schedule_id
+      }).then(
+        res => getData(res)
+      )
+        .then(
+          res => {
+            if (res.code === 'OK') {
+              this.$Message.success(res.message)
+              this.$router.push({
+                name: 'home'
+              })
+            } else {
+              this.$Message.error(res.message)
+            }
+          }
+        )
     }
   },
   computed: {
