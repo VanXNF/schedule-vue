@@ -330,7 +330,7 @@ export default {
       const rb = {
         user_id: this.$store.state.user.userId,
         schedule_id: this.pickSchedule.schedule_id,
-        recycle_bin: false
+        recycle_bin: true
       }
       toRecycleBin(rb)
         .then(

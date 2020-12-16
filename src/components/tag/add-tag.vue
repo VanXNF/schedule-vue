@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <Button v-if="is_show" :disabled="is_disabled"  size="small" @click="modal = true" icon="md-pricetag" type="text"></Button>
+      <Button v-if="is_show" :disabled="is_disabled"  size="small" @click="modal = true" icon="md-pricetag" type="primary"></Button>
       <Modal
         v-model="modal"
         title="添加标签"
@@ -69,7 +69,7 @@ export default {
     }
   },
   mounted () {
-    this.tagList = this.$store.state.app.tagList
+    this.tagList = this.$store.state.schedule.tagList
     // for (let i = 0; i < this.tagList.length; i++) {
     //   let o = { tag_title: this.tagList[i].tag_title, tag_pick: false }
     //   this.pickTag.push(o)

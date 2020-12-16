@@ -226,11 +226,23 @@ export default {
       const rb = {
         user_id: this.$store.state.user.userId,
         note_id: this.note.note_id,
-        recycle_bin: false
+        delete_flag: true
       }
-      toRecycleBinNote(rb).then(
-        this.$router.go(-1)
-      )
+      toRecycleBinNote(rb)
+        .then(
+          res => getData(res)
+        )
+        .then(
+          res => {
+            if (res.code) {
+              this.$Message.success(res.message)
+              this.deleteScheduleListItem(this.pickSchedule)
+              this.$router.go(-1)
+            } else {
+              this.$Message.error(res.message)
+            }
+          }
+        )
       const index = this.$store.state.app.noteList.indexOf(this.note)
       this.$store.state.app.noteList.splice(index, 1)
     },
