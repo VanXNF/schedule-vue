@@ -1,6 +1,6 @@
 FROM node:10.13.0
-
-RUN npm config set registry https://registry.npm.taobao.org
+# docker hub build
+# RUN npm config set registry https://registry.npm.taobao.org
 
 WORKDIR /data/server
 
