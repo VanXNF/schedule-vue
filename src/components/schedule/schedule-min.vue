@@ -7,15 +7,16 @@
           {{pinSchedule.schedule_name}}
         </p>
       <Progress :percent="percentValue" :stroke-color="pinSchedule.bar_color" />
-      <Button type="text" :to="{name: 'change_schedule', params: {Schedule: pinSchedule}}" >详情</Button>
+      <Button v-if="!is_recycle" type="text" :to="{name: 'change_schedule', params: {Schedule: pinSchedule}}" >详情</Button>
       <Button v-if="is_recycle" @click="restore">恢复</Button>
+      <Button v-if="is_recycle" @click="del">删除</Button>
     </Card>
     </template>
   </div>
 </template>
 <script>
 import './schedule-min.less'
-import { restoreSchedule, getData } from '@/api/data'
+import { restoreSchedule, getData, toRecycleBin } from '@/api/data'
 export default {
   name: 'ScheduleMin',
   props: {
@@ -43,6 +44,29 @@ export default {
               this.$Message.success(res.message)
               this.$router.push({
                 name: 'home'
+              })
+            } else {
+              this.$Message.error(res.message)
+            }
+          }
+        )
+    },
+    del () {
+      const rb = {
+        user_id: this.$store.state.user.userId,
+        schedule_id: this.pinSchedule.schedule_id,
+        recycle_bin: false
+      }
+      toRecycleBin(rb)
+        .then(
+          res => getData(res)
+        ).then(
+          res => {
+            if (res.code === 'OK') {
+              this.$Message.success(res.message)
+              this.deleteScheduleListItem(this.pickSchedule)
+              this.$router.push({
+                name: 'recycle_bin'
               })
             } else {
               this.$Message.error(res.message)

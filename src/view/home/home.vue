@@ -2,7 +2,7 @@
   <div class="ivu-home">
     <div>
       <p class="ivu-home-title-p">
-        schedule
+        日程
       </p>
     </div>
     <div>
@@ -11,7 +11,7 @@
     <Divider/>
     <div>
       <p class="ivu-home-title-p">
-        note
+        记事
       </p>
     </div>
     <div>

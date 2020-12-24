@@ -184,7 +184,8 @@ export default {
                     end_point: this.getEndDate(this.formItem.end_point),
                     point_unit: ' ',
                     bar_color: this.formItem.bar_color,
-                    pin_flag: this.formItem.pin_flag
+                    pin_flag: this.formItem.pin_flag,
+                    delete_flag: true
                   }
                 ).then(
                   res => getData(res)
@@ -196,6 +197,9 @@ export default {
                         schedule_id: res.data
                       })
                       this.$Message.success(res.message)
+                      this.$router.push({
+                        name: 'schedule'
+                      })
                     } else {
                       this.$Message.error(res.message)
                     }

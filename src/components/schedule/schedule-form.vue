@@ -166,7 +166,8 @@ export default {
         end_point: this.points.end_point,
         point_unit: this.points.point_unit,
         bar_color: this.formItem.bar_color,
-        pin_flag: this.formItem.pin_flag
+        pin_flag: this.formItem.pin_flag,
+        delete_flag: true
       }
     }
     const validatePointUnit = (rule, value, callback) => {
@@ -197,13 +198,17 @@ export default {
           { required: true, message: '请输入日程名称', trigger: 'blur' }
         ],
         start_point: [
-          { required: true, message: '请输入开始值', trigger: 'blur' }
+          { required: true, message: '请输入开始值', trigger: 'blur' },
+          { type: 'number', message: '开始值必须是数字', trigger: 'blur' }
         ],
         cur_point: [
-          { required: true, message: '请输入当前值', trigger: 'blur' }
+          { required: true, message: '请输入当前值', trigger: 'blur' },
+          { type: 'number', message: '当前值必须是数字', trigger: 'blur' }
         ],
         end_point: [
-          { required: true, message: '请输入结束值', trigger: 'blur' }
+          { required: true, message: '请输入结束值', trigger: 'blur' },
+          { type: 'number', message: '当前值必须是数字', trigger: 'blur' }
+
         ],
         point_unit: [
           { required: true, message: '请输入单位', trigger: 'blur' },
@@ -275,7 +280,9 @@ export default {
                   },
                   oldItem: this.pickSchedule })
                   this.$Message.success(res.message)
-                  this.$router.go(-1)
+                  this.$router.push({
+                    name: 'schedule'
+                  })
                 } else {
                   this.$Message.error(res.message)
                 }

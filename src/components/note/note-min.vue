@@ -16,14 +16,15 @@
         </ul>
       </div>
       <div class="button-div">
-        <Button type="text" :to="{name: 'change_note', params: {pickNote: pinNote}}" >详情</Button>
-        <Button v-if="is_recycle" ></Button>
+        <Button v-if="!is_recycle" type="text" :to="{name: 'change_note', params: {pickNote: pinNote}}" >详情</Button>
+        <Button v-if="is_recycle" @click="restore">恢复</Button>
+        <Button v-if="is_recycle" @click="deleteR">删除</Button>
       </div>
     </Card>
   </div>
 </template>
 <script>
-import { getData, restoreNote, changeNote } from '@/api/data'
+import { getData, restoreNote, changeNote, toRecycleBinNote } from '@/api/data'
 export default {
   name: 'NoteMin',
   data () {
@@ -112,7 +113,31 @@ export default {
             }
           }
         )
+    },
+    deleteR () {
+      const rb = {
+        user_id: this.$store.state.user.userId,
+        note_id: this.pinNote.note_id,
+        delete_flag: false
+      }
+      toRecycleBinNote(rb)
+        .then(
+          res => getData(res)
+        )
+        .then(
+          res => {
+            if (res.code) {
+              this.$Message.success(res.message)
+              this.deleteScheduleListItem(this.pickSchedule)
+              this.$router.push({
+                name: 'recycle_bin'
+              })
+            } else {
+              this.$Message.error(res.message)
+            }
+        )
     }
+
   },
   mounted () {
     // todo get todo list by id
@@ -141,6 +166,7 @@ export default {
   computed: {
     todoList () {
       let obj = JSON.parse(JSON.stringify(this.pinNote.todo_list))
+      // let obj = this.pinNote.todo_list.split('#')
       for (let i = 0; i < obj.length; i++) {
         obj[i].is_check = false
       }
