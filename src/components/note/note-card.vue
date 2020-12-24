@@ -36,9 +36,12 @@
           <div  class="ivu-note-card-btn">
 
             <add-tag @getTags="handleAddTag" :tag-id="note.tag_id" :is_disabled="is_disabled" ></add-tag>
-            <Button icon="md-backspace" type="text" size="small"  v-if="!is_disabled" @click="handleDelete"></Button>
+            <!-- <Button icon="md-backspace" type="text" size="small"  v-if="!is_disabled" @click="handleDelete"></Button>
             <Button icon="md-checkmark" type="text" size="small"  v-if="!is_disabled" @click="handleSubmit"></Button>
-            <Button icon="md-create" type="text" size="small"  v-if="is_disabled" @click="handleChange" ></Button>
+            <Button icon="md-create" type="text" size="small"  v-if="is_disabled" @click="handleChange" ></Button> -->
+            <Button  type="error"  v-if="!is_disabled && is_change" @click="handleDelete"></Button>
+            <Button  type="primary"  v-if="!is_disabled" @click="handleSubmit"></Button>
+            <Button  type="primary"  v-if="is_disabled" @click="handleChange" ></Button>
 
           </div>
           <div class="ivu-note-card-tag-div-1" >

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <Button v-if="is_show" :disabled="is_disabled"  size="small" @click="modal = true" icon="md-pricetag" type="primary"></Button>
+      <Button v-if="is_show" :disabled="is_disabled"   @click="modal = true" type="primary">添加标签</Button>
       <Modal
         v-model="modal"
         title="添加标签"
