@@ -9,7 +9,7 @@
       </p>
       <div class="p-div">
         <ul>
-         <p v-for="(item, i ) in todoList" :key="i" class="ivu-c-note-card-li">
+         <p v-for="(item, i ) in pinNote.todo_list" :key="i" class="ivu-c-note-card-li">
           <Checkbox v-model="item.is_check" @on-change="handleChange(item)" ></Checkbox>
           <span>{{item.todo_item_name}}</span>
           </p>
@@ -29,7 +29,8 @@ export default {
   name: 'NoteMin',
   data () {
     return {
-      cheack: false
+      cheack: false,
+      todoList: []
     }
   },
   props: {
@@ -165,10 +166,10 @@ export default {
     computed: {
       todoList () {
         let obj = JSON.parse(JSON.stringify(this.pinNote.todo_list))
-        // let obj = this.pinNote.todo_list.split('#')
-        for (let i = 0; i < obj.length; i++) {
-          obj[i].is_check = false
-        }
+        // // let obj = this.pinNote.todo_list.split('#')
+        // for (let i = 0; i < obj.length; i++) {
+        //   obj[i].is_check = false
+        // }
         return obj
       }
     } }
