@@ -2,6 +2,15 @@ import Main from '@/components/main'
 
 export default [
   {
+    path: '/admin',
+    name: 'admin',
+    meta: {
+      title: '管理员',
+      hideInMenu: true
+    },
+    component: () => import('@/view/admin/admin.vue')
+  },
+  {
     path: '/login',
     name: 'login',
     meta: {

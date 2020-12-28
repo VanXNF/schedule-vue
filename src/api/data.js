@@ -5,6 +5,15 @@ const scheduleUrl = baseUrl + '/schedule'
 const tagUrl = baseUrl + '/tag'
 const noteUrl = baseUrl + '/note'
 const todoUrl = baseUrl + '/todo'
+const adminUrl = baseUrl + '/admin'
+
+export const getUserList = (d) => {
+  return axios.request({
+    url: adminUrl + '/user/list',
+    method: 'get',
+    params: d
+  })
+}
 
 export const restoreNote = (d) => {
   return axios.request({

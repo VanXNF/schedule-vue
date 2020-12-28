@@ -40,8 +40,10 @@ router.beforeEach((to, from, next) => {
       name: homeName // 跳转到homeName页
     })
   } else {
-    if (store.state.user.hasGetInfo) {
-      turnTo(to, store.state.user.access, next)
+    if (store.state.user.user_id === -1) {
+      next({
+        name: 'admain'
+      })
     } else {
       next()
     }
