@@ -17,6 +17,7 @@
       </div>
       <div class="button-div">
         <Button v-if="!is_recycle" type="text" :to="{name: 'change_note', params: {pickNote: pinNote}}" >详情</Button>
+        <!-- <Button v-if="!is_recycle" type="text" @click="quickHandle">修改</Button> -->
         <Button v-if="is_recycle" @click="restore">恢复</Button>
         <Button v-if="is_recycle" @click="deleteR">删除</Button>
       </div>
@@ -41,7 +42,7 @@ export default {
   methods: {
     handleChange (item) {
       if (item.is_check) {
-        const i = this.todoList.indexOf(item)
+        const i = this.pinNote.todo_list.indexOf(item)
         // this.todoList.splice(i, 1)
         // const str = ''
         // let c = ''
@@ -66,7 +67,7 @@ export default {
         //       }
         //     }
         //   )
-        this.todoList.splice(i, 1)
+        this.pinNote.todo_list.splice(i, 1)
         const d = {
           user_id: this.$store.state.user.userId,
           note_title: this.pinNote.note_title,
@@ -165,12 +166,7 @@ export default {
     },
     computed: {
       todoList () {
-        let obj = JSON.parse(JSON.stringify(this.pinNote.todo_list))
-        // // let obj = this.pinNote.todo_list.split('#')
-        // for (let i = 0; i < obj.length; i++) {
-        //   obj[i].is_check = false
-        // }
-        return obj
+        return this.pinNote.todo_list
       }
     } }
 }

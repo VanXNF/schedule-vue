@@ -181,9 +181,9 @@ export default {
     }
     const validateNumber = (rule, value, callback) => {
       if (Number.isInteger(value)) {
-        callback(new Error('请输入数字'))
-      } else {
         callback()
+      } else {
+        callback(new Error('请输入数字'))
       }
     }
     return {
