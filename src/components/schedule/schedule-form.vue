@@ -171,7 +171,7 @@ export default {
       }
     }
     const validatePointUnit = (rule, value, callback) => {
-      if (value === ' ') {
+      if (value === " ") {
         callback(new Error('单位不能为空'))
       } else {
         callback()

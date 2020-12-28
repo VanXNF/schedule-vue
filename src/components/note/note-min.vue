@@ -134,7 +134,7 @@ export default {
               })
             } else {
               this.$Message.error(res.message)
-            }
+            }}
         )
     }
 
