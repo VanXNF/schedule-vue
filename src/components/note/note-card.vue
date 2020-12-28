@@ -39,9 +39,9 @@
             <!-- <Button icon="md-backspace" type="text" size="small"  v-if="!is_disabled" @click="handleDelete"></Button>
             <Button icon="md-checkmark" type="text" size="small"  v-if="!is_disabled" @click="handleSubmit"></Button>
             <Button icon="md-create" type="text" size="small"  v-if="is_disabled" @click="handleChange" ></Button> -->
-            <Button  type="error"  v-if="!is_disabled && is_change" @click="handleDelete"></Button>
-            <Button  type="primary"  v-if="!is_disabled" @click="handleSubmit"></Button>
-            <Button  type="primary"  v-if="is_disabled" @click="handleChange" ></Button>
+            <Button  type="error"  v-if="!is_disabled && is_change" @click="handleDelete">删除</Button>
+            <Button  type="primary"  v-if="!is_disabled" @click="handleSubmit">确定</Button>
+            <Button  type="primary"  v-if="is_disabled" @click="handleChange" >修改</Button>
 
           </div>
           <div class="ivu-note-card-tag-div-1" >

@@ -177,8 +177,16 @@ export default {
         callback()
       }
     }
+    const validateNumber = (rule, value, callback) => {
+      if (Number.isInteger(value)) {
+        callback(new Error('请输入数字'))
+      } else {
+        callback()
+      }
+    }
     return {
       modal: false,
+      validateNumber,
       getPostData,
       is_change: false,
       is_disabled: false,
@@ -199,15 +207,15 @@ export default {
         ],
         start_point: [
           { required: true, message: '请输入开始值', trigger: 'blur' },
-          { type: 'number', message: '开始值必须是数字', trigger: 'blur' }
+          { validator: validateNumber, trigger: 'blur' }
         ],
         cur_point: [
           { required: true, message: '请输入当前值', trigger: 'blur' },
-          { type: 'number', message: '当前值必须是数字', trigger: 'blur' }
+          { validator: validateNumber, trigger: 'blur' }
         ],
         end_point: [
           { required: true, message: '请输入结束值', trigger: 'blur' },
-          { type: 'number', message: '当前值必须是数字', trigger: 'blur' }
+          { validator: validateNumber, trigger: 'blur' }
 
         ],
         point_unit: [
