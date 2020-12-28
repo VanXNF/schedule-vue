@@ -3,7 +3,7 @@
     <div>
       <Card class="ivu-c-note-card">
         <div class="ivu-c-note-card-div11">
-        <Input v-model="note.note_title" placeholder="请输入记事名称" :disabled="is_disabled" style="width: 250px;" />
+        <Input v-model="note.note_title" placeholder="请输入记事名称" :disabled="is_disabled" style="width: 250px;" maxlength="20" show-word-limit="20"/>
         <Checkbox
               v-model="note.pin_flag"
               :disabled="is_disabled"
@@ -22,7 +22,7 @@
         <!-- v-if="todoListtodoList.length===note.todo_list.length" -->
         </div>
         <div>
-          <Input v-model="note.remarks" maxlength="400" show-word-limit type="textarea" class="ivu-c-note-card-remarks" :disabled="is_disabled"/>
+          <Input v-model="note.remarks" maxlength="200" show-word-limit type="textarea" class="ivu-c-note-card-remarks" :disabled="is_disabled"/>
         </div>
         <div>
           <div class="ivu-note-card-1">
@@ -161,8 +161,9 @@ export default {
                   note_id: res.data
                 })
                 this.$Message.success(res.message)
-                // 构建对象
-                // this.$store.state.app.noteList.push(d)
+                this.$router.push({
+                  name: 'note'
+                })
               } else this.$Message.error(res.message)
             }
           )
@@ -182,6 +183,9 @@ export default {
                   },
                   oldItem: this.pickNote })
                 this.$Message.success(res.message)
+                this.$router.push({
+                  name: 'note'
+                })
                 // const index = this.$store.state.app.noteList.indexOf(this.note)
                 // this.$store.state.app.noteList.splice(index, 1)
               } else this.$Message.error(res.message)
@@ -240,7 +244,9 @@ export default {
             if (res.code) {
               this.$Message.success(res.message)
               this.deleteScheduleListItem(this.pickSchedule)
-              this.$router.go(-1)
+              this.$router.push({
+                name: 'note'
+              })
             } else {
               this.$Message.error(res.message)
             }

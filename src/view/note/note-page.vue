@@ -2,13 +2,12 @@
   <div>
     <div>
       <p class="ivu-sch-title-p">固定记事</p>
-      <note-pin :pin-list="pinNoteList"/>
-
+      <note-pin :pin-list="pinNoteList" v-if="pinNoteList"/>
+      <p v-else>无固定记事</p>
     </div>
         <Divider/>
     <div class="ivu-sch-page-date">
       <p class="ivu-sch-title-p">记事</p>
-
       <note-pin :pin-list="noteListByDate"/>
     </div>
   </div>

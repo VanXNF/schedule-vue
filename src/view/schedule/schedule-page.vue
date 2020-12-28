@@ -2,7 +2,8 @@
   <div>
     <div>
       <p class="ivu-sch-title-p">固定日程</p>
-      <schedule-pin :pin-list="pinScheduleList"/>
+      <schedule-pin :pin-list="pinScheduleList" v-if="pinScheduleList.length"/>
+      <p v-else>无固定日程</p>
     </div>
         <Divider/>
     <div class="ivu-sch-page-date">

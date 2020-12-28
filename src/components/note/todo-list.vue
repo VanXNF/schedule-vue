@@ -21,7 +21,7 @@
         @on-cancel="cancel">
         <Form ref="formItem" :model="formItem" :rules="ruleInline" :label-width="80">
           <FormItem prop="todoTitle">
-            <Input v-model="formItem.todoTitle"/>
+            <Input v-model="formItem.todoTitle" maxlength="20" show-word-limit="20"/>
           </FormItem>
         </Form>
       </Modal>

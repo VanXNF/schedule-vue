@@ -137,10 +137,8 @@ export default {
             }
           }
         )
-    }
-
-  },
-  mounted () {
+    },
+    mounted () {
     // todo get todo list by id
     // getNote({
     //   user_id: this.$store.state.user.userId,
@@ -163,17 +161,17 @@ export default {
     // for (let i = 0; i < this.todoList.length; i++) {
     //   this.todoList[i].is_check = false
     // }
-  },
-  computed: {
-    todoList () {
-      let obj = JSON.parse(JSON.stringify(this.pinNote.todo_list))
-      // let obj = this.pinNote.todo_list.split('#')
-      for (let i = 0; i < obj.length; i++) {
-        obj[i].is_check = false
+    },
+    computed: {
+      todoList () {
+        let obj = JSON.parse(JSON.stringify(this.pinNote.todo_list))
+        // let obj = this.pinNote.todo_list.split('#')
+        for (let i = 0; i < obj.length; i++) {
+          obj[i].is_check = false
+        }
+        return obj
       }
-      return obj
-    }
-  }
+    } }
 }
 </script>
 <style lang="less" >

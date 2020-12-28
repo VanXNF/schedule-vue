@@ -11,9 +11,11 @@
           <FormItem prop="schedule_name">
             <Input
               v-model="formItem.schedule_name"
-              placeholder="目标名称"
+              placeholder="日程名称"
               class="ivu-form-item-1"
               :disabled="is_disabled"
+              maxlength="20"
+              show-word-limit="20"
             />
             <Checkbox
               v-model="formItem.pin_flag"
@@ -158,7 +160,9 @@ export default {
             if (res.code === 'OK') {
               this.$Message.success(res.message)
               this.deleteScheduleListItem(this.pickSchedule)
-              this.$router.go(-1)
+              this.$router.push({
+                name: 'schedule'
+              })
             } else {
               this.$Message.error(res.message)
             }
@@ -229,7 +233,9 @@ export default {
                       },
                       oldItem: this.pickSchedule })
                       this.$Message.success(res.message)
-                      // todo add to
+                      this.$router.push({
+                        name: 'schedule'
+                      })
                     } else {
                       this.$Message.error(res.message)
                     }

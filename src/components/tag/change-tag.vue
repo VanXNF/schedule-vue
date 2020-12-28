@@ -3,7 +3,7 @@
     <div>
         <Form ref="formItem" :model="formItem" :rules="ruleInline" :label-width="30">
           <FormItem prop="tagName">
-            <Input v-model="formItem.tagName" style="width: auto;"/>
+            <Input v-model="formItem.tagName" style="width: auto;" maxlength="10" show-word-limit="10"/>
             <Button type="primary" @click="ok('formItem')">新建标签</Button>
           </FormItem>
         </Form>

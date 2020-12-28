@@ -6,7 +6,8 @@
       </p>
     </div>
     <div>
-      <schedule-pin :pin-list="pinScheduleList"/>
+     <schedule-pin :pin-list="pinScheduleList" v-if="pinScheduleList.length"/>
+      <p v-else>无固定日程</p>
     </div>
     <Divider/>
     <div>
@@ -15,7 +16,8 @@
       </p>
     </div>
     <div>
-      <note-pin :pin-list="pinNoteList"/>
+      <note-pin :pin-list="pinNoteList" v-if="pinNoteList"/>
+      <p v-else>无固定记事</p>
     </div>
   </div>
 </template>
