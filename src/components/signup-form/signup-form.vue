@@ -51,7 +51,7 @@ export default {
         .is().min(6)
         .is().max(20)
         .has().digits()
-        .has().letters()
+        .has().not().letters()
         .has().not().symbols()
       const res = schema.validate(value, { list: true })
       console.log(res)
@@ -65,7 +65,7 @@ export default {
           } else if (e === 'max') {
             callback(new Error('密码长度最高为20位'))
           } else {
-            callback(new Error('密码必须含有字母和数字'))
+            callback(new Error('密码只能使用数字'))
           }
         }
       }

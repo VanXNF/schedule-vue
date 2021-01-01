@@ -180,11 +180,12 @@ export default {
       }
     }
     const validateNumber = (rule, value, callback) => {
-      if (Number.isInteger(value)) {
-        callback()
-      } else {
-        callback(new Error('请输入数字'))
-      }
+      // if (Number.isInteger(value)) {
+      //   callback()
+      // } else {
+      //   callback(new Error('请输入数字'))
+      // }
+      callback()
     }
     return {
       modal: false,

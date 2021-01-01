@@ -54,7 +54,7 @@ export default {
         .is().min(6)
         .is().max(20)
         .has().digits()
-        .has().letters()
+        .has().not().letters()
         .has().not().symbols()
       const res = schema.validate(value, { list: true })
       console.log(res)

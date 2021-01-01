@@ -91,7 +91,7 @@ export default {
         remarks: this.note.remarks,
         pin_flag: this.note.pin_flag,
         tag_id: this.tagId,
-        todo_list: this.conTodoList(this.todoList)
+        todo_list: conTodoList(this.todoList)
       }
     }
     return {

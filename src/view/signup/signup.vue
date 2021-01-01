@@ -33,12 +33,12 @@ export default {
         .then(
           res => {
             if (res.code === 'OK') {
-              this.$Message.success('注册成功')
+              this.$Message.success(res.message)
               this.$router.push(
                 { name: 'login' }
               )
             } else {
-              this.$Message.fail('注册失败')
+              this.$Message.error(res.message)
             }
           }
         )

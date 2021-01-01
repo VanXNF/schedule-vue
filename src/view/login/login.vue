@@ -29,15 +29,18 @@ export default {
     ]),
     handleSubmit ({ userName, password }) {
       this.handleLogin({ userName, password }).then(res => {
-        if (this.$store.state.user.userId === 0) {
-          this.$router.push({
-            name: 'admin'
-          })
-        } else {
-          this.$router.push({
-            name: this.$config.homeName
-          })
-        }
+        if (res.code === 'OK') {
+          this.$Message.success(res.message)
+          if (this.$store.state.user.userId === 0) {
+            this.$router.push({
+              name: 'admin'
+            })
+          } else {
+            this.$router.push({
+              name: this.$config.homeName
+            })
+          }
+        } else this.$Message.error(res.message)
       })
     }
   }
