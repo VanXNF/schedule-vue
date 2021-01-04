@@ -180,11 +180,15 @@ export default {
       }
     }
     const validateNumber = (rule, value, callback) => {
-      // if (Number.isInteger(value)) {
-      //   callback()
-      // } else {
-      //   callback(new Error('请输入数字'))
-      // }
+      const v = parseInt(value)
+      if (Number.isInteger(v)) {
+        if (v < 0) {
+          callback(new Error('值不能小于0'))
+        }
+        callback()
+      } else {
+        callback(new Error('请输入整数'))
+      }
       callback()
     }
     return {
@@ -259,52 +263,61 @@ export default {
       Promise.all([
         this.$refs[name1].validate(),
         this.$refs[name2].validate()
-      ]).then(res => {
-        if (res[0] && res[1]) {
-          const d = this.getPostData()
-          if (!this.is_change) {
-            createSchdule(d)
-              .then(res => getData(res))
-              .then(res => {
-                if (res.code === 'OK') {
-                  this.getScheduleItem({
-                    user_id: this.$store.state.user.userId,
-                    schedule_id: res.data
-                  })
-                  this.$Message.success(res.message)
-                  this.$router.push({
-                    name: 'schedule'
-                  })
-                } else {
-                  this.$Message.error(res.message)
-                }
-              })
-          } else {
+      ])
+        .then(res => {
+          if (res[0] && res[1]) {
+            const v = this.formItem.start_point
+            if (parseInt(this.points.start_point) > parseInt(this.points.cur_point)) {
+              this.$Message.error('开始值必须小于等于当前值')
+              return
+            } else if (parseInt(this.points.cur_point) > parseInt(this.points.end_point)) {
+              this.$Message.error('当前值必须小于等于结束值')
+              return
+            }
+            const d = this.getPostData()
+            if (!this.is_change) {
+              createSchdule(d)
+                .then(res => getData(res))
+                .then(res => {
+                  if (res.code === 'OK') {
+                    this.getScheduleItem({
+                      user_id: this.$store.state.user.userId,
+                      schedule_id: res.data
+                    })
+                    this.$Message.success(res.message)
+                    this.$router.push({
+                      name: 'schedule'
+                    })
+                  } else {
+                    this.$Message.error(res.message)
+                  }
+                })
+            } else {
             // 修改
-            d.delete_flag = true
-            d.schedule_id = this.pickSchedule.schedule_id
-            changeSchdule(d)
-              .then(res => getData(res))
-              .then(res => {
-                if (res.code === 'OK') {
-                  this.changeScheduleItem({ data: {
-                    user_id: this.$store.state.user.userId,
-                    schedule_id: this.pickSchedule.schedule_id
-                  },
-                  oldItem: this.pickSchedule })
-                  this.$Message.success(res.message)
-                  this.$router.push({
-                    name: 'schedule'
-                  })
-                } else {
-                  this.$Message.error(res.message)
-                }
-              })
+              d.delete_flag = true
+              d.schedule_id = this.pickSchedule.schedule_id
+              changeSchdule(d)
+                .then(res => getData(res))
+                .then(res => {
+                  if (res.code === 'OK') {
+                    this.changeScheduleItem({ data: {
+                      user_id: this.$store.state.user.userId,
+                      schedule_id: this.pickSchedule.schedule_id
+                    },
+                    oldItem: this.pickSchedule })
+                    this.$Message.success(res.message)
+                    this.$router.push({
+                      name: 'schedule'
+                    })
+                  } else {
+                    this.$Message.error(res.message)
+                  }
+                })
+            }
+          } else {
+            this.$Message.error('Fail!')
           }
-        } else {
-          this.$Message.error('Fail!')
-        }
-      })
+        })
 
       // if (i && j) {
       //     this.$Message.success('Success!');

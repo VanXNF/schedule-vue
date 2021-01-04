@@ -4,6 +4,11 @@
       <Card class="ivu-c-note-card">
         <div class="ivu-c-note-card-div11">
         <Input v-model="note.note_title" placeholder="请输入记事名称" :disabled="is_disabled" style="width: 250px;" maxlength="20" show-word-limit="20"/>
+        <Form ref="formItem" :model="formItem" :rules="ruleInline" :label-width="80">
+          <FormItem prop="noteTitle">
+            <Input v-model="formItem.noteTitle" placeholder="请输入记事名称" :disabled="is_disabled" style="width: 250px;" maxlength="20" show-word-limit="20"/>
+          </FormItem>
+        </Form>
         <Checkbox
               v-model="note.pin_flag"
               :disabled="is_disabled"
@@ -87,7 +92,7 @@ export default {
     const getPostData = () => {
       return {
         user_id: this.$store.state.user.userId,
-        note_title: this.note.note_title,
+        note_title: this.formItem.noteTitle,
         remarks: this.note.remarks,
         pin_flag: this.note.pin_flag,
         tag_id: this.tagId,
@@ -103,6 +108,14 @@ export default {
       modal: false,
       tagId: 0,
       pickTags: [],
+      formItem: {
+        noteTitle: ''
+      },
+      ruleInline: {
+        noteTitle: [
+          { required: true, message: '记事名称不能为空', trigger: 'blur' }
+        ]
+      },
       note: {
         note_title: '',
         todo_id: '',
@@ -147,51 +160,60 @@ export default {
       this.todoList.splice(index, 1)
     },
     handleSubmit () {
-      const d = this.getPostData()
-      console.log(d)
-      if (!this.is_change) {
-        createNote(d)
-          .then(
-            res => getData(res)
-          ).then(
-            res => {
-              if (res.code === 'OK') {
-                this.getNoteItem({
-                  user_id: this.$store.state.user.userId,
-                  note_id: res.data
-                })
-                this.$Message.success(res.message)
-                this.$router.push({
-                  name: 'note'
-                })
-              } else this.$Message.error(res.message)
+      this.$refs[name].validate(
+        vali => {
+          if (vali) {
+            const d = this.getPostData()
+            console.log(d)
+            if (!this.is_change) {
+              createNote(d)
+                .then(
+                  res => getData(res)
+                ).then(
+                  res => {
+                    if (res.code === 'OK') {
+                      this.getNoteItem({
+                        user_id: this.$store.state.user.userId,
+                        note_id: res.data
+                      })
+                      this.$Message.success(res.message)
+                      this.$router.push({
+                        name: 'note'
+                      })
+                    } else this.$Message.error(res.message)
+                  }
+                )
+            } else {
+              d.note_id = this.note.note_id
+              d.delete_flag = true
+              changeNote(d)
+                .then(
+                  res => getData(res)
+                ).then(
+                  res => {
+                    if (res.code === 'OK') {
+                      this.changeNoteItem({
+                        data: {
+                          user_id: this.$store.state.user.userId,
+                          note_id: this.pickNote.note_id
+                        },
+                        oldItem: this.pickNote })
+                      this.$Message.success(res.message)
+                      this.$router.push({
+                        name: 'note'
+                      })
+                      // const index = this.$store.state.app.noteList.indexOf(this.note)
+                      // this.$store.state.app.noteList.splice(index, 1)
+                    } else this.$Message.error(res.message)
+                  }
+                )
             }
-          )
-      } else {
-        d.note_id = this.note.note_id
-        d.delete_flag = true
-        changeNote(d)
-          .then(
-            res => getData(res)
-          ).then(
-            res => {
-              if (res.code === 'OK') {
-                this.changeNoteItem({
-                  data: {
-                    user_id: this.$store.state.user.userId,
-                    note_id: this.pickNote.note_id
-                  },
-                  oldItem: this.pickNote })
-                this.$Message.success(res.message)
-                this.$router.push({
-                  name: 'note'
-                })
-                // const index = this.$store.state.app.noteList.indexOf(this.note)
-                // this.$store.state.app.noteList.splice(index, 1)
-              } else this.$Message.error(res.message)
-            }
-          )
-      }
+          } else {
+            // this.$Message.error('Todo内容不能为空')
+          }
+        }
+      )
+
       // 先提交todolist
       // 再提交note
     },
