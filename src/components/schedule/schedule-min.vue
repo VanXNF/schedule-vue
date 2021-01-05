@@ -86,6 +86,9 @@ export default {
         const s = new Date(this.pinSchedule.start_point)
         const c = new Date()
         const e = new Date(this.pinSchedule.end_point)
+        if (c > e) {
+          return 100
+        }
         const f = Math.floor((e - s) / (24 * 3600 * 1000))
         const ss = Math.floor((c - s) / (24 * 3600 * 1000))
         return Math.floor(ss / f * 100)

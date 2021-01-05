@@ -70,11 +70,14 @@
                 prop="point_unit"
                 class="ivu-form-item-2"
               >
-                <Input
+                <!-- <Input
                   v-model="points.point_unit"
                   placeholder="单位"
                   :disabled="is_disabled"
-                />
+                /> -->
+              <Select v-model="points.point_unit" style="width:100px" :disabled="is_disabled">
+                <Option v-for="item in pointList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+              </Select>
               </FormItem>
             </Form>
           </FormItem>
@@ -174,7 +177,7 @@ export default {
     }
     const validatePointUnit = (rule, value, callback) => {
       if (value === ' ') {
-        callback(new Error('单位不能为空'))
+        callback(new Error('请选择单位'))
       } else {
         callback()
       }
@@ -189,7 +192,6 @@ export default {
       } else {
         callback(new Error('请输入整数'))
       }
-      callback()
     }
     return {
       modal: false,
@@ -206,7 +208,7 @@ export default {
         start_point: '',
         cur_point: '',
         end_point: '',
-        point_unit: ''
+        point_unit: ' '
       },
       ruleInline: {
         schedule_name: [
@@ -230,7 +232,17 @@ export default {
           { validator: validatePointUnit, trigger: 'blur' }
         ]
       },
-      iconSize: 20
+      iconSize: 20,
+      pointList: [
+        {
+          value: '页',
+          label: '页'
+        },
+        {
+          value: '时',
+          label: '时'
+        }
+      ]
     }
   },
   props: {
@@ -266,7 +278,6 @@ export default {
       ])
         .then(res => {
           if (res[0] && res[1]) {
-            const v = this.formItem.start_point
             if (parseInt(this.points.start_point) > parseInt(this.points.cur_point)) {
               this.$Message.error('开始值必须小于等于当前值')
               return

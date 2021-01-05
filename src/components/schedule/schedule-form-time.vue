@@ -101,6 +101,15 @@ export default {
       date.setDate(date.getDate() + 1)
       return date
     }
+
+    const validateEndPoint = (rule, value, callback) => {
+      const nowDate = new Date()
+      const pickDate = new Date(value)
+      if (nowDate > pickDate) {
+        callback(new Error('结束日期必须大于当前日期'))
+      }
+      callback()
+    }
     return {
       getEndDate,
       is_change: false,
@@ -116,7 +125,8 @@ export default {
           { required: true, message: '请输入日程名称', trigger: 'blur' }
         ],
         end_point: [
-          { type: 'date', required: true, message: '请选择结束时间', trigger: 'blur' }
+          { type: 'date', required: true, message: '请选择结束时间', trigger: 'blur' },
+          { validator: validateEndPoint, trigger: 'blur' }
         ]
       },
       iconSize: 20
