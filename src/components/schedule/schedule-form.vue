@@ -241,6 +241,10 @@ export default {
         {
           value: '时',
           label: '时'
+        },
+        {
+          value: '周',
+          label: '周'
         }
       ]
     }

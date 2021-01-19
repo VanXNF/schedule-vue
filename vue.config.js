@@ -19,11 +19,11 @@ module.exports = {
   },
   productionSourceMap: false,
   devServer: {
-    // proxy: {
-    //   '/*': {
-    //     // target: 'http://remote.vanxnf.top:10080'
-    //     target: 'http://vanxnf.top:8080'
-    //   }
-    // }
+    proxy: {
+      '/*': {
+        // target: 'http://remote.vanxnf.top:10080'
+        target: 'http://vanxnf.top:8080'
+      }
+    }
   }
 }
