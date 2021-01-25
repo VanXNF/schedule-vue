@@ -21,6 +21,7 @@
           <new-schedule-button style="margin-right: 10px;"/>
 
           <search style="margin-right: 10px;"/>
+          <!-- <Button :to="{name: 'admin'}">admin</Button> -->
           <!-- <go-back /> -->
         </header-bar>
       </Header>

@@ -1,18 +1,18 @@
 <template>
   <Table :columns="columns" :data="userList">
-    <template slot-scope="{ row }" slot="id">
+    <template slot-scope="{ row }" slot="user_id">
       <!-- <Input type="text" v-model="editName" v-if="editIndex === index" /> -->
-      <span >{{ row.id }}</span>
+      <span >{{ row.user_id }}</span>
     </template>
 
-    <template slot-scope="{ row, index }" slot="account">
-      <Input type="text" v-model="editAccount" v-if="editIndex === index" />
-      <span v-else>{{ row.account }}</span>
+    <template slot-scope="{ row, index }" slot="user_name">
+      <Input type="text" v-model="editUserName" v-if="editIndex === index" />
+      <span v-else>{{ row.user_name }}</span>
     </template>
 
-    <template slot-scope="{ row, index }" slot="key">
-      <Input type="text" v-model="editKey" v-if="editIndex === index" />
-      <span v-else>{{ row.key }}</span>
+    <template slot-scope="{ row, index }" slot="password">
+      <Input type="text" v-model="editPassword" v-if="editIndex === index" />
+      <span v-else>{{ row.password }}</span>
     </template>
 
     <template slot-scope="{ row, index }" slot="schedule_num">
@@ -36,27 +36,26 @@
   </Table>
 </template>
 <script>
+import { changeUser, getData } from '@/api/data'
 export default {
   name: 'AdminTable',
-  props () {
-    return {
-      userList: []
-    }
+  props: {
+    userList: []
   },
   data () {
     return {
       columns: [
         {
           title: 'id',
-          slot: 'id'
+          slot: 'user_id'
         },
         {
           title: '用户名',
-          slot: 'account'
+          slot: 'user_name'
         },
         {
           title: '密码',
-          slot: 'key'
+          slot: 'password'
         },
         {
           title: '日程',
@@ -72,26 +71,43 @@ export default {
         }
       ],
       editIndex: -1, // 当前聚焦的输入框的行数
-      editAccount: '', // 第一列输入框，当然聚焦的输入框的输入内容，与 data 分离避免重构的闪烁
-      editKey: '', // 第二列输入框
+      editUserName: '', // 第一列输入框，当然聚焦的输入框的输入内容，与 data 分离避免重构的闪烁
+      editPassword: '', // 第二列输入框
       editScheduleNum: '', // 第三列输入框
       editNoteNum: '' // 第四列输入框
     }
   },
   methods: {
     handleEdit (row, index) {
-      this.editAccount = row.account
-      this.editKey = row.key
+      this.editUserName = row.user_name
+      this.editPassword = row.password
       this.editScheduleNum = row.schedule_num
       this.editNoteNum = row.note_num
       this.editIndex = index
     },
     handleSave (index) {
-      this.data[index].account = this.editAccount
-      this.data[index].key = this.editKey
-      this.data[index].schedule_num = this.editScheduleNum
-      this.data[index].note_num = this.editNoteNum
+      this.userList[index].user_name = this.editUserName
+      this.userList[index].password = this.editPassword
+      this.userList[index].schedule_num = this.editScheduleNum
+      this.userList[index].note_num = this.editNoteNum
       this.editIndex = -1
+      changeUser({
+        user_id: this.userList[index].user_id,
+        user_name: this.editUserName,
+        password: this.editPassword,
+        schedule_num: this.editScheduleNum,
+        note_num: this.editNoteNum
+      })
+        .then(res => getData(res))
+        .then(
+          res => {
+            if (res.code === 'OK') {
+              this.$Message.success(res.message)
+            } else {
+              this.$Message.error(res.message)
+            }
+          }
+        )
     }
   }
 }

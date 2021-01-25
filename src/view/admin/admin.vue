@@ -18,8 +18,8 @@ export default {
   },
   mounted () {
     getUserList({
-      start_num: 1,
-      end_num: 10
+      start_num: 0,
+      end_num: 4
     })
       .then(
         res => getData(res)

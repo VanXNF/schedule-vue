@@ -3,13 +3,10 @@
     <div>
       <Card class="ivu-c-note-card">
         <div class="ivu-c-note-card-div11">
-        <Input v-model="note.note_title" placeholder="请输入记事名称" :disabled="is_disabled" style="width: 250px;" maxlength="20" show-word-limit="20"/>
         <Form ref="formItem" :model="formItem" :rules="ruleInline" :label-width="80">
           <FormItem prop="noteTitle">
             <Input v-model="formItem.noteTitle" placeholder="请输入记事名称" :disabled="is_disabled" style="width: 250px;" maxlength="20" show-word-limit="20"/>
-          </FormItem>
-        </Form>
-        <Checkbox
+            <Checkbox
               v-model="note.pin_flag"
               :disabled="is_disabled"
               class="ivu-check-box"
@@ -21,6 +18,8 @@
                 :size="iconSize"
               />
         </Checkbox>
+          </FormItem>
+        </Form>
         </div>
         <div>
           <todo-list @add-todo="addTodo" @remove-todo="removeTodo" :is_pick="s_todo" :todo-items="todoList"  />
@@ -40,17 +39,20 @@
           </div>
           <div  class="ivu-note-card-btn">
 
-            <add-tag @getTags="handleAddTag" :tag-id="note.tag_id" :is_disabled="is_disabled" ></add-tag>
+            <add-tag @getTags="handleAddTag" :tag-id="note.tag_id" :is_disabled="is_disabled" :is_pick="s_todo"></add-tag>
             <!-- <Button icon="md-backspace" type="text" size="small"  v-if="!is_disabled" @click="handleDelete"></Button>
             <Button icon="md-checkmark" type="text" size="small"  v-if="!is_disabled" @click="handleSubmit"></Button>
             <Button icon="md-create" type="text" size="small"  v-if="is_disabled" @click="handleChange" ></Button> -->
             <Button  type="error"  v-if="!is_disabled && is_change" @click="handleDelete">删除</Button>
-            <Button  type="primary"  v-if="!is_disabled" @click="handleSubmit">确定</Button>
-            <Button  type="primary"  v-if="is_disabled" @click="handleChange" >修改</Button>
+            <Button  type="primary"  v-if="!is_disabled" @click="handleSubmit('formItem')">确定</Button>
+            <Button  type="primary"  v-if="is_disabled" @click="handleChange">修改</Button>
 
           </div>
-          <div class="ivu-note-card-tag-div-1" >
+          <!-- <div class="ivu-note-card-tag-div-1" >
               <Tag v-for="(item, i) in pickTags" :key="i" :disabled="is_disabled" :name="item" closable @on-close="handleClose">{{item.tag_title}}</Tag>
+          </div> -->
+          <div class="ivu-note-card-tag-div-1" >
+              <Tag v-if="pickTag!==''" :disabled="is_disabled" :name="item" closable @on-close="handleClose">{{pickTag.tag_title}}</Tag>
           </div>
           <Modal
               v-model="modal"
@@ -99,15 +101,25 @@ export default {
         todo_list: conTodoList(this.todoList)
       }
     }
+    const getTagById = (id) => {
+      for (let i = 0; i < this.$store.state.schedule.tagList.length; i++) {
+        const e = this.$store.state.schedule.tagList[i]
+        if (e.tag_id === id) {
+          return e
+        }
+      }
+    }
+
     return {
       getPostData,
       conTodoList,
-
+      getTagById,
       is_disabled: false,
       is_change: false,
       modal: false,
       tagId: 0,
       pickTags: [],
+      pickTag: '',
       formItem: {
         noteTitle: ''
       },
@@ -141,13 +153,20 @@ export default {
       'changeNoteItem',
       'changeNoteItem'
     ]),
-    handleAddTag (tags) {
+    handleAddTags (tags) {
       this.pickTags = []
       this.pickTags.push(tags)
     },
+    handleAddTag (tag) {
+      this.pickTag = tag
+      this.tagId = tag.tag_id
+    },
+    // handleClose (event, name) {
+    //   const index = this.pickTags.indexOf(name)
+    //   this.pickTags.splice(index, 1)
+    // },
     handleClose (event, name) {
-      const index = this.pickTags.indexOf(name)
-      this.pickTags.splice(index, 1)
+      this.pickTag = ''
     },
     handleTodo (todoList) {
       this.todoList = todoList
@@ -159,12 +178,11 @@ export default {
       const index = this.todoList.indexOf(todo)
       this.todoList.splice(index, 1)
     },
-    handleSubmit () {
+    handleSubmit (name) {
       this.$refs[name].validate(
         vali => {
           if (vali) {
             const d = this.getPostData()
-            console.log(d)
             if (!this.is_change) {
               createNote(d)
                 .then(
@@ -186,6 +204,7 @@ export default {
             } else {
               d.note_id = this.note.note_id
               d.delete_flag = true
+              d.modify_time = new Date()
               changeNote(d)
                 .then(
                   res => getData(res)
@@ -287,12 +306,28 @@ export default {
     // picknote > note
     if (this.is_pick) {
       this.note = this.pickNote
+      this.formItem.noteTitle = this.pickNote.note_title
       this.is_disabled = true
       this.s_todo = true
+      // if (this.note.todo_list instanceof Array) {
+      //   for (let i = 0; i < this.note.todo_list.length; i++) {
+      //     const e = this.note.todo_list[i]
+      //     this.todoList.push(e.todo_item_name)
+      //   }
+      // } else {
+      //   const todolist = this.note.todo_list.split('#')
+      //   for (let i = 0; i < todolist.length; i++) {
+      //     const e = todolist[i]
+      //     const ee = e.splice(',')
+      //     this.todoList.push(ee[0])
+      //   }
       for (let i = 0; i < this.note.todo_list.length; i++) {
         const e = this.note.todo_list[i]
         this.todoList.push(e.todo_item_name)
       }
+
+      this.pickTag = this.getTagById(this.note.tag_id)
+      this.tagId = this.note.tag_id
     }
   },
   computed: {

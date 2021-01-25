@@ -7,7 +7,6 @@
         </p>
         <div>
           <schedule-pin :pin-list="scheduleList"/>
-
         </div>
       </div>
       <Divider></Divider>
@@ -16,7 +15,6 @@
           记事
         </p>
         <div>
-
           <note-pin :pin-list="noteList"/>
         </div>
       </div>

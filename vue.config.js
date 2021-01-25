@@ -21,8 +21,9 @@ module.exports = {
   devServer: {
     proxy: {
       '/*': {
-        // target: 'http://remote.vanxnf.top:10080'
-        target: 'http://vanxnf.top:8080'
+        target: 'http://remote.vanxnf.top:31180'
+        // target: 'http://vanxnf.top:8080'
+        // target: 'http://localhost:10000'
       }
     }
   }

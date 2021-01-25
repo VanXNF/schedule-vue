@@ -45,8 +45,7 @@ export default {
           { required: true, message: 'Tag名称不能为空', trigger: 'blur' }
         ]
       },
-      tagList: [
-      ]
+      tagList: []
     }
   },
   methods: {
